@@ -14,7 +14,7 @@ export const register = async (req, res, next) => {
     });
 
     await newUser.save();
-    res.status(200).send("User has been created.");
+    res.status(200).json({ message: "User has been created successfully." });
   } catch (err) {
     next(err);
   }
@@ -23,6 +23,8 @@ export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) return next(createError(404, "User not found!"));
+
+    if (user.disabled) return next(createError(403, "User is disabled."));
 
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
@@ -42,7 +44,7 @@ export const login = async (req, res, next) => {
         httpOnly: true,
       })
       .status(200)
-      .json({ details: { ...otherDetails }, isAdmin });
+      .json({ token, details: { ...otherDetails }, isAdmin });
   } catch (err) {
     next(err);
   }

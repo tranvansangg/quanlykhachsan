@@ -1,4 +1,95 @@
-.pList{
+.property-list {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin: 0 auto;
+}
+
+.property-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 220px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.property-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.property-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.property-item:hover .property-img {
+  transform: scale(1.12);
+}
+
+.property-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.4) 100%);
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.property-item:hover .property-overlay {
+  background: linear-gradient(180deg,
+    rgba(3, 105, 161, 0.2) 0%,
+    rgba(3, 105, 161, 0.5) 100%);
+}
+
+.property-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  gap: 12px;
+}
+
+.property-icon {
+  font-size: 40px;
+  transition: transform 0.3s ease;
+}
+
+.property-item:hover .property-icon {
+  transform: scale(1.15);
+}
+
+.property-type {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.property-count {
+  font-size: 13px;
+  opacity: 0.95;
+  margin: 0;
+  font-weight: 400;
+}
+
+.pList {
   width: 100%;
   max-width: 1024px;
   display: flex;
@@ -6,26 +97,96 @@
   gap: 20px;
 }
 
-.pListItem{
-  flex:1;
+.pListItem {
+  flex: 1;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
 }
 
-.pListImg{
+.pListImg {
   width: 100%;
   height: 150px;
   object-fit: cover;
 }
 
-.pListTitles>h1{
+.pListTitles > h1 {
   font-size: 18px;
   color: #444;
   text-transform: capitalize;
 }
 
-.pListTitles>h2{
+.pListTitles > h2 {
   font-size: 14px;
   font-weight: 300;
+}
+
+@media (max-width: 1024px) {
+  .property-list {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .property-item {
+    height: 180px;
+  }
+
+  .property-type {
+    font-size: 16px;
+  }
+
+  .property-count {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .property-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .property-item {
+    height: 160px;
+  }
+
+  .property-content {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .property-icon {
+    font-size: 28px;
+  }
+
+  .property-type {
+    font-size: 14px;
+  }
+
+  .property-count {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .property-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .property-item {
+    height: 140px;
+  }
+
+  .property-icon {
+    font-size: 24px;
+  }
+
+  .property-type {
+    font-size: 12px;
+  }
+
+  .property-count {
+    font-size: 10px;
+  }
 }

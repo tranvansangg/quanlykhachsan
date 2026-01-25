@@ -1,0 +1,247 @@
+/* Guest Picker Container */
+.gp-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 12px;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  z-index: 50;
+  overflow: hidden;
+}
+
+/* Content Area */
+.gp-content {
+  padding: 16px;
+}
+
+/* Overview Section */
+.gp-overview {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.gp-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gp-summary-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+/* Selectors Grid */
+.gp-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+/* Individual Selector */
+.gp-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.gp-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Control Group */
+.gp-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 8px;
+  width: 100%;
+}
+
+.gp-btn {
+  flex: 0 0 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.gp-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+  color: #0071c2;
+}
+
+.gp-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.gp-value {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  min-width: 24px;
+}
+
+/* Additional Rooms Section */
+.gp-additional {
+  padding-top: 16px;
+}
+
+.gp-additional-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px 0;
+}
+
+.gp-room-item {
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.gp-room-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.gp-room-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gp-control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.gp-btn-sm {
+  flex: 0 0 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 3px;
+}
+
+.gp-btn-sm:hover:not(:disabled) {
+  background: #f3f4f6;
+  color: #0071c2;
+}
+
+.gp-btn-sm:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.gp-value-sm {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.gp-remove-btn {
+  width: 100%;
+  padding: 6px;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gp-remove-btn:hover {
+  background: #fecaca;
+  border-color: #f87171;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gp-container {
+    width: 280px;
+    right: -20px;
+  }
+
+  .gp-selectors {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .gp-container {
+    width: calc(100vw - 32px);
+    right: auto;
+    left: 16px;
+  }
+
+  .gp-selectors {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+
+  .gp-control {
+    padding: 4px 6px;
+  }
+
+  .gp-btn {
+    flex: 0 0 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+
+  .gp-value {
+    font-size: 13px;
+  }
+}

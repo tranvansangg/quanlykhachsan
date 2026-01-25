@@ -1,62 +1,108 @@
 .listContainer {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 28px;
+  padding: 0 16px;
 }
 
 .listWrapper {
   width: 100%;
-  max-width: 1024px;
+  max-width: 1200px;
   display: flex;
-  gap: 20px;
+  gap: 28px;
+  align-items: flex-start;
 }
 
 .listSearch {
-  flex: 1;
-  background-color: #febb02;
+  flex: 0 0 320px;
+  background-color: #ffd900;
+  /* stronger warm yellow for sidebar */
+  border-radius: 16px;
+  padding: 18px;
+
+  .lsTitle {
+    font-size: 18px;
+    color: #0f172a;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .lsItem {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .lsItem>label {
+    font-size: 13px;
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  .lsItem>input,
+  .lsItem>select,
+  .lsItem>textarea,
+  .lsItem>span {
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid rgba(2, 6, 23, 0.06);
+    padding: 8px 10px;
+    background: #fff;
+  }
+
+  .lsItem>span {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .lsOptions {
+    padding: 8px 0;
+  }
+
+  .lsOptionItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #334155;
+    font-size: 13px;
+  }
+
   padding: 10px;
-  border-radius: 10px;
-  position: sticky;
-  top: 10px;
-  height: max-content;
 }
 
-.lsTitle{
-  font-size: 20px;
-  color: #555;
-  margin-bottom: 10px;
-}
-
-.lsItem{
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 10px;
-}
-
-.lsItem>label{
-  font-size: 12px;
-}
-
-.lsItem>input{
-  height: 30px;
-  border: none;
-  padding: 5px;
-}
-.lsItem>span{
-  height: 30px;
-  padding: 5px;
-  background-color: white;
+/* Highlight the small header area inside the sidebar */
+.filterHeader {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  background: transparent;
+  padding: 8px;
+  border-radius: 6px;
+  position: relative;
+}
+
+.filterHeader .lsTitle {
+  margin-right: auto;
+  text-align: left;
+  margin-left: 24px;
+}
+
+.filterHeader .closeFilterBtn {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #0f172a;
   cursor: pointer;
+  padding: 4px 8px;
 }
 
-.lsOptions{
-  padding: 10px;
-}
-
-.lsOptionItem{
+.lsOptionItem {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -64,20 +110,352 @@
   font-size: 12px;
 }
 
-.lsOptionInput{
-  width: 50px;
+.lsOptionInput {
+  width: 70px;
+  border-radius: 8px;
+  padding: 6px 8px;
 }
 
-.listSearch>button{
-  padding: 10px;
+.listSearch>button {
+  padding: 12px 14px;
   background-color: #0071c2;
   color: white;
   border: none;
   width: 100%;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(3, 102, 214, 0.12);
 }
 
 .listResult {
-  flex: 3;
+  flex: 1 1 0;
+}
+
+.resultHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.sortContainer {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: auto;
+}
+
+.sortSelect {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 14px;
+  color: #0f172a;
+  cursor: pointer;
+  font-weight: 500;
+  height: 40px;
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: #0071c2;
+  box-shadow: 0 0 0 3px rgba(0, 113, 194, 0.1);
+}
+
+.mobileFilterBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 14px;
+  color: #0f172a;
+  cursor: pointer;
+  font-weight: 500;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.resultInfo h3 {
+  font-size: 20px;
+  margin: 0 0 4px 0;
+  color: #0f172a;
+}
+
+.resultInfo p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+/* Subtle yellow background for the results info block */
+.resultInfo {
+  background: #ffd900;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.searchItemList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Checkbox group layout: stack each checkbox on its own line */
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #334155;
+}
+
+.checkboxItem input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== DateRange Picker Styling - Booking.com Standard Calendar ===== */
+
+.dateRangeContainer {
+  display: block;
+  margin-top: 8px;
+  width: 100%;
+}
+
+/* Picker wrapper */
+.dateRangeContainer .rdrDateRangePickerWrapper {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.dateRangeContainer .rdrCalendarWrapper {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(2, 6, 23, 0.08);
+  padding: 12px;
+}
+
+/* Months container - stack vertically for sidebar */
+.dateRangeContainer .rdrMonths {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dateRangeContainer .rdrMonth {
+  width: 100%;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* Month header with navigation */
+.dateRangeContainer .rdrMonthAndYearPickers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dateRangeContainer .rdrMonthName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  flex: 1;
+}
+
+/* ===== CALENDAR GRID - 7 COLUMNS FOR WEEKDAY + DATES ===== */
+
+/* Main days container - CSS Grid 7 columns */
+.dateRangeContainer .rdrDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+/* WEEKDAY HEADERS - Horizontal in same grid */
+.dateRangeContainer .rdrWeekDay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+}
+
+/* DAY CELLS - Square, centered */
+.dateRangeContainer .rdrDay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 0;
+  min-height: 34px;
+}
+
+.dateRangeContainer .rdrDay .rdrDayNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.dateRangeContainer .rdrDay .rdrDayNumber span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #334155;
+}
+
+/* ===== DATE STATES ===== */
+
+/* Inactive/other month dates */
+.dateRangeContainer .rdrDayPassive .rdrDayNumber span {
+  color: #cbd5e1;
+}
+
+/* Range highlight - light blue */
+.dateRangeContainer .rdrDayInRange .rdrDayNumber span {
+  background: #dbeafe;
+  color: #0369a1;
+}
+
+/* Selected/start/end dates - dark blue */
+.dateRangeContainer .rdrDayStartEdge .rdrDayNumber span,
+.dateRangeContainer .rdrDayEndEdge .rdrDayNumber span,
+.dateRangeContainer .rdrDayStart .rdrDayNumber span,
+.dateRangeContainer .rdrDayEnd .rdrDayNumber span,
+.dateRangeContainer .rdrDaySelected .rdrDayNumber span {
+  background: #0071c2;
+  color: white;
+  font-weight: 600;
+}
+
+/* Hover state - light gray background */
+.dateRangeContainer .rdrDay:hover .rdrDayNumber span {
+  background: #f1f5f9;
+  cursor: pointer;
+}
+
+.dateRangeContainer .rdrDayPassive:hover .rdrDayNumber span {
+  background: transparent;
+  cursor: default;
+}
+
+/* Rating group styling */
+.ratingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ratingItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.ratingItem input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.ratingStars {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.ratingStars svg {
+  width: 16px;
+  height: 16px;
+  color: #d97706;
+  fill: #d97706;
+}
+
+/* ===== Price Range Styling ===== */
+
+.priceRange {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.priceInput {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  flex: 1;
+}
+
+.priceInput .label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.priceInput input {
+  width: 100%;
+  height: 40px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.priceInput input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.priceInput input:focus {
+  outline: none;
+  border-color: #0071c2;
+  box-shadow: 0 0 0 3px rgba(0, 113, 194, 0.1);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  color: #334155;
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 18px;
 }

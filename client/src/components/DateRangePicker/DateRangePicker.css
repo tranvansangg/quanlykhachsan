@@ -1,0 +1,277 @@
+.drp-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  width: 580px;
+  max-width: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+}
+
+/* Info Row */
+.drp-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+.drp-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drp-info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.drp-info-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0071c2;
+}
+
+.drp-nights {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0071c2;
+  background: #dbeafe;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Navigation */
+.drp-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+.drp-nav-btn {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  padding: 0;
+}
+
+.drp-nav-btn:hover {
+  border-color: #0071c2;
+  color: #0071c2;
+  background: #f0f7ff;
+}
+
+.drp-nav-btn:active {
+  transform: scale(0.95);
+}
+
+/* Calendars Container */
+.drp-calendars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px 16px;
+  background: white;
+}
+
+/* Month */
+.drp-month {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drp-month-title {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  padding: 0 4px;
+}
+
+/* Weekdays */
+.drp-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.drp-weekday {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Days */
+.drp-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.drp-week {
+  display: contents;
+}
+
+.drp-day {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  border: none;
+  position: relative;
+}
+
+.drp-day:hover:not(.drp-day-disabled):not(.drp-day-range) {
+  background: #f0f7ff;
+  color: #0071c2;
+  border-color: #0071c2;
+}
+
+/* Day States */
+.drp-day-empty {
+  cursor: default;
+  background: transparent;
+  border: none;
+}
+
+.drp-day-disabled {
+  background: #f9fafb;
+  color: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.drp-day-disabled:hover {
+  background: #f9fafb;
+  color: #d1d5db;
+  border-color: #e5e7eb;
+}
+
+.drp-day-range {
+  background: #e0f0ff;
+  color: #0071c2;
+  font-weight: 600;
+  border-color: transparent;
+  border-radius: 0;
+}
+
+.drp-day-range:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.drp-day-range:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.drp-day-hover {
+  background: #dbeafe;
+  color: #0071c2;
+  border-color: transparent;
+}
+
+.drp-day-start,
+.drp-day-end {
+  background: #0071c2;
+  color: white;
+  font-weight: 700;
+  border-color: #0071c2;
+  border-radius: 4px;
+}
+
+.drp-day-start:hover,
+.drp-day-end:hover {
+  background: #0066b3;
+  border-color: #0066b3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .drp-container {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .drp-calendars {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .drp-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .drp-nights {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .drp-container {
+    font-size: 12px;
+  }
+
+  .drp-info {
+    padding: 8px 12px;
+  }
+
+  .drp-nav {
+    padding: 6px 12px;
+  }
+
+  .drp-calendars {
+    padding: 8px 12px;
+  }
+
+  .drp-day {
+    font-size: 11px;
+    aspect-ratio: 1.1;
+  }
+
+  .drp-month-title {
+    font-size: 12px;
+  }
+
+  .drp-weekday {
+    font-size: 9px;
+  }
+}
+

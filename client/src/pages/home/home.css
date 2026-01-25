@@ -1,12 +1,149 @@
-.homeContainer{
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
+.home-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8f9fa;
 }
 
-.homeTitle{
-  width: 1024px;
-  font-size: 20px;
+/* Marquee Banner Section */
+.marquee-section {
+  width: 100%;
+  background: #f8f9fa;
+  padding: 16px 20px;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+.marquee-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(255, 193, 7, 0.95), rgba(255, 235, 59, 0.95));
+  border: 1px solid rgba(255, 235, 59, 0.5);
+}
+
+.marquee-content {
+  display: flex;
+  animation: marquee 40s linear infinite;
+  gap: 40px;
+}
+
+.marquee-text {
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 15px;
+  color: #003580;
+  padding: 12px 20px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* Section Styling */
+.home-section {
+  width: 100%;
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.home-section:nth-child(odd) {
+  background: #f8f9fa;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #003580;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 40px;
+  font-weight: 400;
+}
+
+/* Featured Section */
+.featured-section {
+  padding: 80px 20px 60px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
+}
+
+.featured-section .section-title {
+  color: #003580;
+}
+
+/* Property Section */
+.property-section {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.property-section .section-title {
+  color: #003580;
+}
+
+/* Hotels Section */
+.hotels-section {
+  padding: 60px 20px;
+  background: #f8f9fa;
+}
+
+.hotels-section .section-title {
+  color: #003580;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  .home-section {
+    padding: 40px 16px;
+  }
+
+  .featured-section {
+    padding: 50px 16px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  .home-section {
+    padding: 30px 12px;
+  }
 }

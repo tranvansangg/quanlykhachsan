@@ -1,30 +1,161 @@
-.mail{
+.mail {
   width: 100%;
-  margin-top: 50px;
-  background-color: #003580;
-  color: white;
+  margin-top: 100px;
+  background: linear-gradient(135deg, #003580 0%, #0a66c2 100%);
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.mailContent {
+  max-width: 600px;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 50px;
+  gap: 25px;
 }
 
-.mailInputContainer>input{
-  width: 300px;
-  height: 30px;
-  padding: 10px;
-  border: none;
-  margin-right: 10px;
-  border-radius: 5px;
+.mailTitle {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-.mailInputContainer>button{
+.mailDesc {
+  font-size: 16px;
+  opacity: 0.95;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.mailInputContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mailInput {
+  flex: 1;
+  min-width: 250px;
   height: 50px;
-  background-color: #0071c2;
-  color: white;
-  font-weight: 500;
+  padding: 12px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.mailInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.3);
+}
+
+.mailInput::placeholder {
+  color: #999;
+}
+
+.mailBtn {
+  height: 50px;
+  padding: 12px 30px;
+  background-color: #ffc107;
+  color: #003580;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.mailBtn:hover {
+  background-color: #ffb300;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+}
+
+.mailBtn:active {
+  transform: translateY(0);
+}
+
+.successMessage {
+  background-color: rgba(46, 125, 50, 0.9);
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  animation: slideDown 0.3s ease;
+  font-size: 14px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .mail {
+    padding: 40px 15px;
+    margin-top: 0;
+  }
+
+  .mailTitle {
+    font-size: 24px;
+  }
+
+  .mailDesc {
+    font-size: 14px;
+  }
+
+  .mailInputContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mailInput {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .mailBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .mail {
+    padding: 30px 10px;
+    margin-top: 0;
+  }
+
+  .mailTitle {
+    font-size: 20px;
+  }
+
+  .mailDesc {
+    font-size: 12px;
+  }
+
+  .mailInput,
+  .mailBtn {
+    height: 45px;
+    font-size: 12px;
+  }
 }

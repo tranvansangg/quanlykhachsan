@@ -1,11 +1,29 @@
-.navbar{
-  height: 50px;
-  background-color: #003580;
-  display: flex;
-  justify-content: center;
+/* Navbar Base Styles */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: linear-gradient(to right, #2563eb, #1d4ed8, #2563eb);
+  border-bottom: 1px solid #1e40af;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.navContainer{
+.navbar__content {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When Service Tabs are integrated - smooth expand effect */
+.navbar--with-tabs {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.navbar--with-tabs .navbar__content {
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+
+.navContainer {
   width: 100%;
   max-width: 1024px;
   color: white;
@@ -14,11 +32,11 @@
   justify-content: space-between;
 }
 
-.logo{
+.logo {
   font-weight: 500;
 }
 
-.navButton{
+.navButton {
   margin-left: 20px;
   border: none;
   padding: 5px 10px;

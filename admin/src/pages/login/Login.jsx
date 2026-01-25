@@ -1,66 +1,107 @@
-import axios from "axios";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-// import { AuthContext } from "../../context/AuthContext";
-import "./login.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LogIn } from 'lucide-react';
+import './login.scss';
 
-const Login = () => {
-  const [credentials, setCredentials] = useState({
-    username: undefined,
-    password: undefined,
-  });
-
-  const { loading, error, dispatch } = useContext(AuthContext);
-
+const Login = ({ setIsAuthenticated }) => {
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('admin123');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
-  };
-
-  const handleClick = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: "LOGIN_START" });
-    try {
-      const res = await axios.post("/auth/login", credentials);
-      if (res.data.isAdmin) {
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+    setLoading(true);
+    setError('');
 
-        navigate("/");
+    try {
+      const res = await fetch('http://localhost:8800/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.details));
+        setIsAuthenticated(true);
+        navigate('/');
       } else {
-        dispatch({
-          type: "LOGIN_FAILURE",
-          payload: { message: "You are not allowed!" },
-        });
+        setError(data.message || 'Đăng nhập thất bại');
       }
     } catch (err) {
-      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
+      setError('Lỗi kết nối đến server');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login">
-      <div className="lContainer">
-        <input
-          type="text"
-          placeholder="username"
-          id="username"
-          onChange={handleChange}
-          className="lInput"
-        />
-        <input
-          type="password"
-          placeholder="password"
-          id="password"
-          onChange={handleChange}
-          className="lInput"
-        />
-        <button disabled={loading} onClick={handleClick} className="lButton">
-          Login
-        </button>
-        {error && <span>{error.message}</span>}
+    <div className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <div className="login-logo">🏨</div>
+          <h1>Hotel Admin</h1>
+          <p>Quản Lý Khách Sạn</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="login-form">
+          {error && <div className="error-message">{error}</div>}
+
+          <div className="form-group">
+            <label htmlFor="username">Tên Đăng Nhập</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Nhập tên đăng nhập"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Mật Khẩu</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Nhập mật khẩu"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="btn-login"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <div className="spinner-small"></div>
+                Đang đăng nhập...
+              </>
+            ) : (
+              <>
+                <LogIn size={18} />
+                Đăng Nhập
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="login-footer">
+          <p>Demo Account:</p>
+          <code>admin / password123</code>
+        </div>
       </div>
+
+      <div className="login-background"></div>
     </div>
   );
 };

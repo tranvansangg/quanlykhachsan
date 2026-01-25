@@ -1,128 +1,686 @@
-.header {
-  background-color: #003580;
+/* Scrolling Text Animation - REMOVED (moved to Home page) */
+.scrolling-text {
+  /* No animation - static text */
+  display: inherit;
+  white-space: inherit;
+  padding: inherit;
+}
+
+/* Header Container */
+.header-banner {
+  background: linear-gradient(135deg, #003580 0%, #0369a1 100%);
+  min-height: 400px;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero Header with Background Image */
+.headerHero {
+  background-image: url('https://wallpaperaccess.com/full/2690968.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+  position: relative;
+  padding-top: 32px;
+  padding-bottom: 64px;
+}
+
+.headerHero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.headerHero>* {
+  position: relative;
+  z-index: 2;
+}
+
+.header-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  font-weight: 700;
   color: white;
+  margin-bottom: 16px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 40px;
+  font-weight: 400;
+}
+
+/* Search Box */
+.search-box-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  padding: 16px 20px;
+  margin-top: -50px;
+  position: relative;
+  z-index: 10;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.3fr 140px;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.search-field {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.search-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.input-base {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #fafafa;
+  color: #333;
+}
+
+.input-base::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.input-base:hover {
+  border-color: #bbb;
+  background: #fff;
+}
+
+.input-base:focus {
+  outline: none;
+  border-color: #003580;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0, 53, 128, 0.1);
+}
+
+.input-base:active {
+  border-color: #0369a1;
+}
+
+.input-base::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Select Dropdown */
+select.input-base {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+select.input-base:hover {
+  border-color: #bbb;
+  background-color: #fff;
+}
+
+select.input-base:focus {
+  outline: none;
+  border-color: #003580;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(0, 53, 128, 0.1);
+}
+
+/* Search Button */
+.search-button {
+  background: #0066cc;
+  color: white;
+  border: none;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+  width: 100%;
+  min-width: 120px;
+}
+
+.search-button:hover {
+  background: #0052a3;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.search-button:active {
+  transform: translateY(1px);
+}
+
+/* Suggestions Dropdown */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.suggestion-item:hover {
+  background-color: #f8fafc;
+  color: #003580;
+}
+
+/* Date Picker Container */
+.date-picker-container {
   position: relative;
 }
 
-.headerContainer {
-  width: 100%;
-  max-width: 1024px;
-  margin: 20px 0px 100px 0px;
+.date-range-wrapper {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  margin-top: 8px;
+  padding: 12px;
+  min-width: 320px;
+  max-width: 520px;
 }
 
-.headerContainer.listMode {
-  margin: 20px 0px 0px 0px;
+/* react-date-range overrides */
+.date-range-wrapper .rdrDateRangePickerWrapper {
+  background: transparent;
+  box-shadow: none;
 }
 
-.headerList {
+.date-range-wrapper .rdrCalendarWrapper {
+  background: white;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.date-range-wrapper .rdrMonths {
   display: flex;
-  gap: 40px;
-  margin-bottom: 50px;
+  gap: 24px;
+  justify-content: space-between;
 }
 
-.headerListItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.date-range-wrapper .rdrMonth {
+  box-shadow: none;
 }
 
-.headerListItem.active {
-  border: 1px solid white;
-  padding: 10px;
-  border-radius: 20px;
+.date-range-wrapper .rdrMonthName {
+  text-align: center;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
 }
 
-.headerDesc {
-  margin: 20px 0px;
+.date-range-wrapper .rdrWeekDay {
+  color: #94a3b8;
+  font-weight: 600;
 }
 
-.headerBtn {
-  background-color: #0071c2;
-  color: white;
+.date-range-wrapper .rdrDay .rdrDayNumber span {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  border-radius: 9999px;
   font-weight: 500;
+  color: #475569;
+}
+
+.date-range-wrapper .rdrDayPassive .rdrDayNumber span {
+  color: #cbd5e1;
+}
+
+.date-range-wrapper .rdrDayInRange .rdrDayNumber span {
+  background: #e6f5ff;
+  color: #0369a1;
+}
+
+.date-range-wrapper .rdrDayStart .rdrDayNumber span,
+.date-range-wrapper .rdrDayEnd .rdrDayNumber span,
+.date-range-wrapper .rdrDaySelected .rdrDayNumber span {
+  background: #0369a1;
+  color: white;
+}
+
+/* Tabs */
+.date-range-wrapper>div:first-child button {
+  background: transparent;
   border: none;
-  padding: 10px;
-  cursor: pointer;
 }
 
-.headerSearch {
-  height: 30px;
-  background-color: white;
-  border: 3px solid #febb02;
-  display: flex;
+/* quick-select buttons */
+.quick-select {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 10px 0px;
-  border-radius: 5px;
-  position: absolute;
-  bottom: -25px;
-  width: 100%;
-  max-width: 1024px;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  border: 1px solid #e6eef8;
+  background: white;
+  color: #0f172a;
+  font-size: 13px;
 }
 
-.headerIcon {
-  color: lightgray;
+.quick-select:hover {
+  background: #f8fafc;
 }
 
-.headerSearchItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Enhanced visuals */
+.date-range-wrapper {
+  border: 1px solid rgba(2, 6, 23, 0.06);
+  padding: 14px;
 }
 
-.headerSearchInput {
-  border: none;
-  outline: none;
+.date-range-wrapper .rdrDateRangePickerWrapper {
+  background: white;
 }
 
-.headerSearchText {
-  color: lightgray;
-  cursor: pointer;
+.date-range-wrapper .rdrCalendarWrapper {
+  padding: 12px 8px 6px 8px;
 }
 
-.date {
-  position: absolute;
-  top: 50px;
-  z-index: 2;
-}
-
-.options {
-  z-index: 2;
-  position: absolute;
-  top: 50px;
-  background-color: white;
-  color: gray;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
-}
-
-.optionItem {
-  width: 200px;
+/* Tabs header */
+.date-range-wrapper .tabs {
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
-.optionCounter {
+.date-range-wrapper .tabs button {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: #475569;
+}
+
+.date-range-wrapper .tabs button:first-child {
+  color: #0369a1;
+  border-bottom: 3px solid #0369a1;
+}
+
+/* Month header and navigation */
+.date-range-wrapper .rdrMonthName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.date-range-wrapper .rdrMonthAndYearPickers {
+  justify-content: center;
+}
+
+.date-range-wrapper .rdrNextPrevButton {
+  color: #0369a1;
+}
+
+/* Quick-select pill styles */
+.date-range-wrapper .exact-pill {
+  background: #eef6ff;
+  border: 1px solid #dbeefd;
+  color: #0369a1;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+.date-range-wrapper .quick-select {
+  border: 1px solid #e6eef8;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.06);
+}
+
+/* Footer Xong button */
+.date-range-wrapper .btn-primary {
+  background: #0369a1;
+  border-color: transparent;
+}
+
+/* make calendar and controls breathe */
+.date-range-wrapper .rdrMonths {
+  gap: 28px;
+}
+
+
+/* Options Dropdown */
+.options-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  margin-top: 12px;
+  padding: 20px;
+  min-width: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.option-item {
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: black;
+  justify-content: space-between;
+  border: 1px solid #e0e7ff;
+  transition: all 0.2s ease;
 }
 
-.optionCounterButton {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #0071c2;
-  color: #0071c2;
+.option-item:hover {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  border-color: #0369a1;
+}
+
+.option-label {
+  font-weight: 600;
+  color: #003580;
+  font-size: 14px;
+}
+
+.option-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.option-btn {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #e0e7ff;
+  background: white;
+  border-radius: 6px;
   cursor: pointer;
-  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #003580;
+  transition: all 0.2s ease;
+  font-size: 16px;
 }
 
-.optionCounterButton:disabled {
+.option-btn:hover {
+  border-color: #003580;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  transform: scale(1.1);
+}
+
+.option-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: scale(1);
+}
+
+.option-value {
+  font-weight: 600;
+  color: #003580;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Error Message */
+.error-message {
+  padding: 12px 14px;
+  background: #c92626;
+  border: 1px solid #c92626;
+  border-radius: 6px;
+  color: #c92626;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+/* Sticky List Header */
+.list-header {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 64px;
+  z-index: 40;
+  padding: 16px 20px;
+}
+
+.list-header-tabs {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #64748b;
+}
+
+.tab-button.active {
+  background: #003580;
+  color: white;
+}
+
+.tab-button:not(.active):hover {
+  background: #f1f5f9;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .header-title {
+    font-size: 2rem;
+  }
+
+  .header-subtitle {
+    font-size: 1rem;
+  }
+
+  .search-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .header-banner {
+    min-height: 350px;
+    padding: 30px 16px;
+  }
+
+  .header-title {
+    font-size: 1.75rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+  }
+
+  .search-box-container {
+    padding: 16px;
+    margin-top: -50px;
+  }
+
+  .search-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .search-button {
+    width: 100%;
+  }
+
+  .date-range-wrapper {
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 280px;
+    right: auto;
+  }
+
+  .options-dropdown {
+    left: -50%;
+    right: -50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-banner {
+    min-height: 300px;
+    padding: 20px 12px;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .header-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  .search-box-container {
+    padding: 12px;
+    margin-top: -40px;
+    border-radius: 8px;
+  }
+
+  .search-label {
+    font-size: 12px;
+  }
+
+  .input-base,
+  .search-button {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .list-header {
+    top: 50px;
+  }
+
+  .list-header-tabs {
+    gap: 8px;
+  }
+
+  .tab-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* Ensure date picker fits on small screens */
+  .date-range-wrapper {
+    left: 0;
+    right: 0;
+    transform: none;
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+    min-width: 0;
+    padding: 10px;
+  }
+}
+
+/* Destination Helper Tooltip */
+.destination-helper-tooltip {
+  padding: 12px;
+  background-color: #dc2626;
+  border-left: 4px solid #991b1b;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 320px;
+  white-space: normal;
+}
+
+.destination-helper-tooltip p {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
 }

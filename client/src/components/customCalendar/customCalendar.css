@@ -1,0 +1,107 @@
+/* Custom Calendar Component - Booking.com Style */
+
+.customCalendar {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(2, 6, 23, 0.08);
+  padding: 12px;
+  width: 100%;
+}
+
+/* Calendar Header */
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(2, 6, 23, 0.06);
+}
+
+.monthName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+.navBtn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #0071c2;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.navBtn:hover {
+  background: #f1f5f9;
+}
+
+/* Weekday Row */
+.weekDaysRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.weekDay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Days Grid */
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.dayCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-height: 34px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dayCell.empty {
+  cursor: default;
+}
+
+.dayCell:not(.empty):hover {
+  background: #f1f5f9;
+}
+
+.dayCell.inRange {
+  background: #dbeafe;
+  color: #0369a1;
+}
+
+.dayCell.selected {
+  background: #0071c2;
+  color: white;
+  font-weight: 600;
+}
+
+.dayCell.today {
+  border: 1px solid #0071c2;
+}

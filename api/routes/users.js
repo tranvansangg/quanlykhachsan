@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  setUserDisabled,
 } from "../controllers/user.js";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
@@ -26,6 +27,9 @@ router.put("/:id", verifyUser, updateUser);
 
 //DELETE
 router.delete("/:id", verifyUser, deleteUser);
+
+//LOCK / UNLOCK user (admin only) - body optional { disabled: true|false }
+router.put("/disable/:id", verifyAdmin, setUserDisabled);
 
 //GET
 router.get("/:id", verifyUser, getUser);

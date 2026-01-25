@@ -1,127 +1,61 @@
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import List from "./pages/list/List";
-import Single from "./pages/single/Single";
-import New from "./pages/new/New";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { productInputs, userInputs } from "./formSource";
-import "./style/dark.scss";
-import { useContext } from "react";
-import { DarkModeContext } from "./context/darkModeContext";
-import { AuthContext } from "./context/AuthContext";
-import { hotelColumns, roomColumns, userColumns } from "./datatablesource";
-import NewHotel from "./pages/newHotel/NewHotel";
-import NewRoom from "./pages/newRoom/NewRoom";
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './styles/App.scss';
+import Login from './pages/login/Login';
+import Dashboard from './pages/dashboard/Dashboard';
+import Hotels from './pages/hotels/Hotels';
+import HotelDetail from './pages/hotels/HotelDetail';
+import Rooms from './pages/rooms/Rooms';
+import RoomDetail from './pages/rooms/RoomDetail';
+import Users from './pages/users/Users';
+import UserDetail from './pages/users/UserDetail';
+import Reviews from './pages/reviews/Reviews';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 
 function App() {
-  const { darkMode } = useContext(DarkModeContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const ProtectedRoute = ({ children }) => {
-    const { user } = useContext(AuthContext);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+    setLoading(false);
+  }, []);
 
-    if (!user) {
-      return <Navigate to="/login" />;
-    }
-
-    return children;
-  };
+  if (loading) return <div className="loader-container"><div className="loader"></div></div>;
 
   return (
-    <div className={darkMode ? "app dark" : "app"}>
-      <BrowserRouter>
+    <BrowserRouter>
+      {isAuthenticated ? (
+        <div className="app-wrapper">
+          <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+          <div className="app-main">
+            <Navbar />
+            <div className="app-content">
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/hotels" element={<Hotels />} />
+                <Route path="/hotels/new" element={<HotelDetail />} />
+                <Route path="/hotels/:id" element={<HotelDetail />} />
+                <Route path="/rooms" element={<Rooms />} />
+                <Route path="/rooms/new" element={<RoomDetail />} />
+                <Route path="/rooms/:id" element={<RoomDetail />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/users/:id" element={<UserDetail />} />
+                <Route path="/reviews" element={<Reviews />} />
+              </Routes>
+            </div>
+          </div>
+        </div>
+      ) : (
         <Routes>
-          <Route path="/">
-            <Route path="login" element={<Login />} />
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="users">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={userColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path=":userId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <New inputs={userInputs} title="Add New User" />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-            <Route path="hotels">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={hotelColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path=":productId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <NewHotel  />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-            <Route path="rooms">
-              <Route
-                index
-                element={
-                  <ProtectedRoute>
-                    <List columns={roomColumns} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path=":productId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="new"
-                element={
-                  <ProtectedRoute>
-                    <NewRoom  />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-          </Route>
+          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      )}
+    </BrowserRouter>
   );
 }
 
