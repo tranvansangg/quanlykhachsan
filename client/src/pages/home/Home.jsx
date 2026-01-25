@@ -12,7 +12,7 @@ const Home = () => {
     <div className="home-wrapper">
       <Navbar />
       <Header />
-      
+
       {/* Scrolling Banner Section */}
       <section className="marquee-section">
         <div className="marquee-container">
@@ -24,7 +24,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Featured Section */}
       <section className="home-section featured-section">
         <div className="section-container">
@@ -54,7 +54,7 @@ const Home = () => {
 
       {/* Newsletter Section */}
       <MailList />
-      
+
       {/* Footer */}
       <Footer />
     </div>

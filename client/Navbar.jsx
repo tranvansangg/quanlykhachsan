@@ -11,9 +11,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import ServiceTabs from "../serviceTabs/ServiceTabs";
-import "../navbar/navbar.css";
+import { AuthContext } from "./src/context/AuthContext";
+import ServiceTabs from "./src/components/serviceTabs/ServiceTabs";
+import "./navbar.css";
 
 const Navbar = () => {
   const { user, dispatch } = useContext(AuthContext);
