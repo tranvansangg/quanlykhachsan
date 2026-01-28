@@ -1,0 +1,240 @@
+/* Payment Form Styles */
+.paymentFormContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.paymentCard {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.paymentTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 30px 0;
+}
+
+/* Card Preview */
+.cardPreview {
+  margin-bottom: 40px;
+  perspective: 1000px;
+}
+
+.cardFront {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 24px;
+  color: white;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cardFront::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="400" height="300" fill="none"/><rect width="400" height="300" fill="url(%23grid)" /></svg>');
+  pointer-events: none;
+}
+
+.cardChip {
+  width: 50px;
+  height: 40px;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  border-radius: 6px;
+  position: relative;
+}
+
+.cardChip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(90deg, transparent 30%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.1) 70%, transparent 70%),
+    linear-gradient(transparent 30%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.1) 70%, transparent 70%);
+  background-size: 20% 20%;
+  border-radius: 6px;
+}
+
+.cardNumber {
+  font-size: 24px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.cardInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cardField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cardLabel {
+  font-size: 11px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cardValue {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+/* Form Styles */
+.paymentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.formLabel svg {
+  width: 14px;
+  height: 14px;
+  color: #667eea;
+}
+
+.formInput {
+  padding: 12px 14px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.formInput.error {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.errorText {
+  font-size: 12px;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+/* Submit Button */
+.paymentSubmitBtn {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.paymentSubmitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+.paymentSubmitBtn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Security Info */
+.securityInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6b7280;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.securityInfo svg {
+  width: 14px;
+  height: 14px;
+  color: #16a34a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .paymentCard {
+    padding: 24px;
+  }
+
+  .cardFront {
+    padding: 16px;
+    min-height: 180px;
+  }
+
+  .cardNumber {
+    font-size: 18px;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -11,13 +11,16 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     phone: "",
     city: "",
     country: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,11 +31,17 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
 
     // Validation
     if (!formData.username.trim()) {
       setError("Tên đăng nhập không được để trống");
+      setLoading(false);
+      return;
+    }
+    if (formData.username.length < 3) {
+      setError("Tên đăng nhập phải có ít nhất 3 ký tự");
       setLoading(false);
       return;
     }
@@ -56,6 +65,11 @@ const Register = () => {
       setLoading(false);
       return;
     }
+    if (formData.password !== formData.confirmPassword) {
+      setError("Mật khẩu xác nhận không khớp");
+      setLoading(false);
+      return;
+    }
     if (!formData.phone.trim()) {
       setError("Số điện thoại không được để trống");
       setLoading(false);
@@ -75,10 +89,17 @@ const Register = () => {
     try {
       const res = await axios.post(
         "http://localhost:8800/api/auth/register",
-        formData
+        {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          phone: formData.phone,
+          city: formData.city,
+          country: formData.country,
+        }
       );
-      alert("Đăng ký thành công! Vui lòng đăng nhập.");
-      navigate("/login");
+      setSuccess("Đăng ký thành công! Vui lòng đăng nhập.");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Lỗi đăng ký. Vui lòng thử lại.");
     } finally {
@@ -87,32 +108,40 @@ const Register = () => {
   };
 
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Navbar />
-      <div className="register">
-        <div className="registerWrapper">
-          <div className="registerForm">
-            <h1 className="registerTitle">Đăng ký tài khoản</h1>
-            <p className="registerSubtitle">
-              Tham gia HotelBook để tìm khách sạn tuyệt vời
-            </p>
+      <div className="register-page">
+        <div className="register-container">
+          <div className="register-card">
+            {/* Header Card */}
+            <div className="register-card-header">
+              <h1 className="register-title">Đăng Ký</h1>
+              <p className="register-subtitle">Tham gia HotelBook để tìm khách sạn tuyệt vời</p>
+            </div>
 
-            <form onSubmit={handleSubmit} className="form">
-              <div className="formGroup">
-                <label htmlFor="username">Tên đăng nhập</label>
+            {/* Form Section */}
+            <form onSubmit={handleSubmit} className="register-form">
+              {/* Username Field */}
+              <div className="form-group">
+                <label htmlFor="username" className="form-label">
+                  Tên đăng nhập
+                </label>
                 <input
                   type="text"
-                  placeholder="Nhập tên đăng nhập"
+                  placeholder="Nhập tên đăng nhập (tối thiểu 3 ký tự)"
                   id="username"
                   name="username"
                   onChange={handleChange}
                   value={formData.username}
-                  className="formInput"
+                  className="form-input"
                 />
               </div>
 
-              <div className="formGroup">
-                <label htmlFor="email">Email</label>
+              {/* Email Field */}
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
                 <input
                   type="email"
                   placeholder="Nhập email của bạn"
@@ -120,13 +149,16 @@ const Register = () => {
                   name="email"
                   onChange={handleChange}
                   value={formData.email}
-                  className="formInput"
+                  className="form-input"
                 />
               </div>
 
-              <div className="formGroup">
-                <label htmlFor="password">Mật khẩu</label>
-                <div className="passwordWrapper">
+              {/* Password Field */}
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Mật khẩu
+                </label>
+                <div className="password-input-wrapper">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
@@ -134,12 +166,13 @@ const Register = () => {
                     name="password"
                     onChange={handleChange}
                     value={formData.password}
-                    className="formInput"
+                    className="form-input password-input"
                   />
                   <button
                     type="button"
-                    className="togglePassword"
+                    className="toggle-password-btn"
                     onClick={() => setShowPassword(!showPassword)}
+                    title={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                   >
                     <FontAwesomeIcon
                       icon={showPassword ? faEyeSlash : faEye}
@@ -148,8 +181,39 @@ const Register = () => {
                 </div>
               </div>
 
-              <div className="formGroup">
-                <label htmlFor="phone">Số điện thoại</label>
+              {/* Confirm Password Field */}
+              <div className="form-group">
+                <label htmlFor="confirmPassword" className="form-label">
+                  Xác nhận mật khẩu
+                </label>
+                <div className="password-input-wrapper">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Nhập lại mật khẩu"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    onChange={handleChange}
+                    value={formData.confirmPassword}
+                    className="form-input password-input"
+                  />
+                  <button
+                    type="button"
+                    className="toggle-password-btn"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    title={showConfirmPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                  >
+                    <FontAwesomeIcon
+                      icon={showConfirmPassword ? faEyeSlash : faEye}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Phone Field */}
+              <div className="form-group">
+                <label htmlFor="phone" className="form-label">
+                  Số điện thoại
+                </label>
                 <input
                   type="tel"
                   placeholder="Nhập số điện thoại"
@@ -157,62 +221,90 @@ const Register = () => {
                   name="phone"
                   onChange={handleChange}
                   value={formData.phone}
-                  className="formInput"
+                  className="form-input"
                 />
               </div>
 
-              <div className="formGroup">
-                <label htmlFor="city">Thành phố</label>
-                <input
-                  type="text"
-                  placeholder="Nhập thành phố"
-                  id="city"
-                  name="city"
-                  onChange={handleChange}
-                  value={formData.city}
-                  className="formInput"
-                />
+              {/* City and Country in One Row */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="city" className="form-label">
+                    Thành phố
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Nhập thành phố"
+                    id="city"
+                    name="city"
+                    onChange={handleChange}
+                    value={formData.city}
+                    className="form-input"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="country" className="form-label">
+                    Quốc gia
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Nhập quốc gia"
+                    id="country"
+                    name="country"
+                    onChange={handleChange}
+                    value={formData.country}
+                    className="form-input"
+                  />
+                </div>
               </div>
 
-              <div className="formGroup">
-                <label htmlFor="country">Quốc gia</label>
-                <input
-                  type="text"
-                  placeholder="Nhập quốc gia"
-                  id="country"
-                  name="country"
-                  onChange={handleChange}
-                  value={formData.country}
-                  className="formInput"
-                />
-              </div>
+              {/* Error Message */}
+              {error && (
+                <div className="error-alert">
+                  <span className="error-icon">⚠</span>
+                  <p>{error}</p>
+                </div>
+              )}
 
-              {error && <div className="errorMessage">{error}</div>}
+              {/* Success Message */}
+              {success && (
+                <div className="success-alert">
+                  <span className="success-icon">✓</span>
+                  <p>{success}</p>
+                </div>
+              )}
 
-              <button disabled={loading} type="submit" className="submitBtn">
-                {loading ? "Đang đăng ký..." : "Đăng ký"}
+              {/* Submit Button */}
+              <button
+                disabled={loading}
+                type="submit"
+                className="register-btn"
+              >
+                {loading ? (
+                  <>
+                    <span className="spinner"></span>
+                    Đang đăng ký...
+                  </>
+                ) : (
+                  "Đăng Ký"
+                )}
               </button>
             </form>
 
-            <div className="registerFooter">
-              <p>
-                Đã có tài khoản?{" "}
-                <Link to="/login" className="loginLink">
-                  Đăng nhập
-                </Link>
+            {/* Footer */}
+            <div className="register-card-footer">
+              <p className="login-link">
+                Đã có tài khoản? <Link to="/login">Đăng nhập ngay</Link>
               </p>
             </div>
           </div>
 
-          <div className="registerImage">
-            <img
-              src="https://cf.bstatic.com/static/img/theme-index/flights_v2/search_flights_new_one_hero_blue_340x428.webp"
-              alt="Register"
-            />
-          </div>
+          {/* Decorative Elements */}
+          <div className="decoration-blob blob-1"></div>
+          <div className="decoration-blob blob-2"></div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

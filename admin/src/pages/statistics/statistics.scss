@@ -1,0 +1,487 @@
+.statistics-container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.stats-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+  }
+
+  .header-subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+// KPI Cards
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 6px solid #667eea;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .kpi-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    flex-shrink: 0;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .kpi-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h3 {
+      font-size: 0.95rem;
+      color: #7f8c8d;
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      color: #2c3e50;
+    }
+
+    .kpi-detail {
+      font-size: 0.85rem;
+      color: #95a5a6;
+    }
+  }
+
+  &.total-bookings {
+    border-left-color: #667eea;
+
+    .kpi-icon {
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+    }
+
+    .kpi-value {
+      color: #667eea;
+    }
+  }
+
+  &.total-revenue {
+    border-left-color: #27ae60;
+
+    .kpi-icon {
+      background: rgba(39, 174, 96, 0.1);
+      color: #27ae60;
+    }
+
+    .kpi-value {
+      color: #27ae60;
+    }
+  }
+
+  &.confirmed-bookings {
+    border-left-color: #f39c12;
+
+    .kpi-icon {
+      background: rgba(243, 156, 18, 0.1);
+      color: #f39c12;
+    }
+
+    .kpi-value {
+      color: #f39c12;
+    }
+  }
+
+  &.completed-bookings {
+    border-left-color: #9b59b6;
+
+    .kpi-icon {
+      background: rgba(155, 89, 182, 0.1);
+      color: #9b59b6;
+    }
+
+    .kpi-value {
+      color: #9b59b6;
+    }
+  }
+}
+
+// Charts Section
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-container {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  h2 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      margin: 0;
+    }
+
+    .month-picker {
+      padding: 0.5rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: border-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+    }
+  }
+
+  .chart-wrapper {
+    min-height: 300px;
+    display: flex;
+    align-items: flex-end;
+  }
+}
+
+// Monthly Chart
+.monthly-chart {
+  width: 100%;
+  height: 250px;
+
+  .no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #7f8c8d;
+  }
+
+  .bars-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 250px;
+    gap: 1rem;
+  }
+
+  .bar-item {
+    flex: 1;
+    min-width: 0;
+
+    .bar-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar {
+      width: 100%;
+      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px 8px 0 0;
+      transition: all 0.3s;
+      min-height: 20px;
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(1.1);
+        transform: translateY(-5px);
+      }
+    }
+
+    .bar-label {
+      width: 100%;
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+
+      .month {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        font-weight: 600;
+      }
+
+      .value {
+        font-size: 0.75rem;
+        color: #667eea;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Daily Chart
+.daily-chart {
+  width: 100%;
+  height: 250px;
+
+  .no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #7f8c8d;
+  }
+
+  .days-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    height: 250px;
+    gap: 0.3rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+
+  .day-item {
+    flex: 0 0 auto;
+    width: 25px;
+    min-width: 25px;
+
+    .day-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .bar {
+      width: 100%;
+      background: linear-gradient(180deg, #27ae60 0%, #1e8449 100%);
+      border-radius: 4px 4px 0 0;
+      transition: all 0.3s;
+      min-height: 10px;
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(1.15);
+        transform: translateY(-3px);
+      }
+    }
+
+    .day-label {
+      width: 100%;
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+
+      .day-num {
+        font-size: 0.65rem;
+        color: #7f8c8d;
+        font-weight: 600;
+        writing-mode: vertical-lr;
+        text-orientation: mixed;
+      }
+
+      .revenue {
+        font-size: 0.6rem;
+        color: #27ae60;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Summary Table
+.summary-section {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  h2 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .summary-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+
+      th {
+        padding: 1.25rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #f9f9f9;
+        }
+
+        td {
+          padding: 1.25rem;
+          vertical-align: middle;
+          color: #2c3e50;
+
+          &.month-cell {
+            font-weight: 600;
+            color: #667eea;
+          }
+
+          &.revenue-cell {
+            color: #27ae60;
+            font-weight: 600;
+          }
+
+          &.average-cell {
+            color: #9b59b6;
+          }
+        }
+      }
+    }
+  }
+}
+
+.stats-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+  font-size: 1.2rem;
+  color: #667eea;
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .statistics-container {
+    padding: 1rem;
+  }
+
+  .stats-header {
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .header-subtitle {
+      font-size: 0.95rem;
+    }
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .kpi-card {
+    padding: 1.5rem;
+
+    .kpi-icon {
+      width: 60px;
+      height: 60px;
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .kpi-content {
+      .kpi-value {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .chart-container {
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.1rem;
+    }
+
+    .chart-wrapper {
+      min-height: 250px;
+    }
+  }
+
+  .summary-section {
+    padding: 1.5rem;
+
+    .summary-table {
+      font-size: 0.85rem;
+
+      th, td {
+        padding: 0.75rem;
+      }
+    }
+  }
+}

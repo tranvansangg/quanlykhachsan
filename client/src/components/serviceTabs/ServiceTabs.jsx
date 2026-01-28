@@ -1,34 +1,56 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import {
   faBed,
   faPlane,
   faCar,
+  faMapMarkerAlt,
   faTaxi,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./serviceTabs.css";
 
-const SERVICES = [
-  { icon: faBed, label: "Lưu trú", active: true },
-  { icon: faPlane, label: "Chuyến bay", active: false },
-  { icon: faCar, label: "Cho thuê xe", active: false },
-  { icon: faBed, label: "Địa điểm", active: false },
-  { icon: faTaxi, label: "Taxi", active: false },
-];
-
 const ServiceTabs = ({ sticky = false }) => {
+  const [activeTab, setActiveTab] = useState("stays");
+
+  const tabs = [
+    {
+      id: "stays",
+      label: "Lưu trú",
+      icon: faBed,
+    },
+    {
+      id: "flights",
+      label: "Chuyến bay",
+      icon: faPlane,
+    },
+    {
+      id: "rentals",
+      label: "Cho thuê xe",
+      icon: faCar,
+    },
+    {
+      id: "locations",
+      label: "Địa điểm",
+      icon: faMapMarkerAlt,
+    },
+    {
+      id: "taxi",
+      label: "Taxi",
+      icon: faTaxi,
+    },
+  ];
+
   return (
-    <div className={`serviceTabsContainer ${sticky ? "sticky" : ""}`}>
-      <div className={`serviceTabsWrapper ${sticky ? "sticky-wrapper" : ""}`}>
-        {SERVICES.map((item, idx) => (
+    <div className={`service-tabs ${sticky ? "sticky-mode" : ""}`}>
+      <div className="service-tabs-wrapper">
+        {tabs.map((tab) => (
           <button
-            key={idx}
-            className={`serviceTabButton ${item.active ? "active" : ""} ${
-              sticky ? "sticky-variant" : ""
-            }`}
-            type="button"
+            key={tab.id}
+            className={`service-tab ${activeTab === tab.id ? "active" : ""}`}
+            onClick={() => setActiveTab(tab.id)}
           >
-            <FontAwesomeIcon icon={item.icon} className="serviceTabIcon" />
-            <span className="serviceTabLabel">{item.label}</span>
+            <FontAwesomeIcon icon={tab.icon} className="tab-icon" />
+            <span className="tab-label">{tab.label}</span>
           </button>
         ))}
       </div>

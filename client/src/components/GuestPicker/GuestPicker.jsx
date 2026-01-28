@@ -2,6 +2,12 @@ import { useEffect, useRef } from "react";
 import "./GuestPicker.css";
 
 const GuestPicker = ({ initialOptions, onOptionsChange, onClose }) => {
+  // Fallback to default values if initialOptions is invalid
+  const defaultOptions = { adults: 1, children: 0, rooms: 1 };
+  const validOptions = (initialOptions && typeof initialOptions === 'object' && initialOptions.adults !== undefined) 
+    ? initialOptions 
+    : defaultOptions;
+
   const containerRef = useRef(null);
 
   // Click-outside detection
@@ -16,67 +22,82 @@ const GuestPicker = ({ initialOptions, onOptionsChange, onClose }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
 
-  const handleOption = (roomIndex, type, operation) => {
-    const newOptions = JSON.parse(JSON.stringify(initialOptions));
+  const handleOption = (type, operation, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    const newOptions = { ...validOptions };
 
     if (operation === "i") {
-      newOptions.rooms[roomIndex][type] += 1;
+      newOptions[type] += 1;
     } else {
-      if (type === "adults" && newOptions.rooms[roomIndex][type] > 1) {
-        newOptions.rooms[roomIndex][type] -= 1;
-      } else if (type === "children" && newOptions.rooms[roomIndex][type] > 0) {
-        newOptions.rooms[roomIndex][type] -= 1;
+      if (type === "adults" && newOptions[type] > 1) {
+        newOptions[type] -= 1;
+      } else if (type === "children" && newOptions[type] > 0) {
+        newOptions[type] -= 1;
+      } else if (type === "rooms" && newOptions[type] > 1) {
+        newOptions[type] -= 1;
       }
     }
 
     onOptionsChange(newOptions);
   };
 
-  const handleAddRoom = () => {
-    const newOptions = JSON.parse(JSON.stringify(initialOptions));
-    newOptions.rooms.push({ adults: 1, children: 0 });
+  const handleAddRoom = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const newOptions = { ...validOptions };
+    newOptions.rooms += 1;
     onOptionsChange(newOptions);
   };
 
-  const handleRemoveRoom = (roomIndex) => {
-    if (initialOptions.rooms.length > 1) {
-      const newOptions = JSON.parse(JSON.stringify(initialOptions));
-      newOptions.rooms = newOptions.rooms.filter((_, idx) => idx !== roomIndex);
+  const handleRemoveRoom = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (validOptions && validOptions.rooms > 1) {
+      const newOptions = { ...validOptions };
+      newOptions.rooms -= 1;
       onOptionsChange(newOptions);
     }
   };
 
   return (
     <div className="gp-container" ref={containerRef}>
-      <div className="gp-content">
-        {/* Overview Tab */}
-        <div className="gp-overview">
-          <div className="gp-summary">
-            <p className="gp-summary-text">
-              {initialOptions.rooms[0].adults} adults · {initialOptions.rooms[0].children} children · {initialOptions.rooms.length} room{initialOptions.rooms.length > 1 ? 's' : ''}
-            </p>
-          </div>
+      {/* Header with Summary */}
+      <div className="gp-header">
+        <div className="gp-summary">
+          <p className="gp-summary-text">
+            {validOptions && validOptions.adults ? validOptions.adults : 0} adult{validOptions && validOptions.adults !== 1 ? 's' : ''} · {validOptions && validOptions.children ? validOptions.children : 0} child{validOptions && validOptions.children !== 1 ? 'ren' : ''} · {validOptions && validOptions.rooms ? validOptions.rooms : 0} room{validOptions && validOptions.rooms !== 1 ? 's' : ''}
+          </p>
         </div>
+      </div>
 
+      <div className="gp-content">
         {/* Detail Selectors */}
         <div className="gp-selectors">
           {/* Adults */}
           <div className="gp-selector">
             <label className="gp-label">Adults</label>
-            <div className="gp-control">
+            <div className="gp-control-wrapper">
               <button
                 type="button"
-                disabled={initialOptions.rooms[0].adults <= 1}
-                className="gp-btn"
-                onClick={() => handleOption(0, "adults", "d")}
+                disabled={!validOptions || validOptions.adults <= 1}
+                className="gp-btn-control"
+                onClick={(e) => handleOption("adults", "d", e)}
               >
                 −
               </button>
-              <span className="gp-value">{initialOptions.rooms[0].adults}</span>
+              <span className="gp-value-control">{validOptions && validOptions.adults ? validOptions.adults : 0}</span>
               <button
                 type="button"
-                className="gp-btn"
-                onClick={() => handleOption(0, "adults", "i")}
+                className="gp-btn-control"
+                onClick={(e) => handleOption("adults", "i", e)}
               >
                 +
               </button>
@@ -86,20 +107,20 @@ const GuestPicker = ({ initialOptions, onOptionsChange, onClose }) => {
           {/* Children */}
           <div className="gp-selector">
             <label className="gp-label">Children</label>
-            <div className="gp-control">
+            <div className="gp-control-wrapper">
               <button
                 type="button"
-                disabled={initialOptions.rooms[0].children <= 0}
-                className="gp-btn"
-                onClick={() => handleOption(0, "children", "d")}
+                disabled={!validOptions || validOptions.children <= 0}
+                className="gp-btn-control"
+                onClick={(e) => handleOption("children", "d", e)}
               >
                 −
               </button>
-              <span className="gp-value">{initialOptions.rooms[0].children}</span>
+              <span className="gp-value-control">{validOptions && validOptions.children ? validOptions.children : 0}</span>
               <button
                 type="button"
-                className="gp-btn"
-                onClick={() => handleOption(0, "children", "i")}
+                className="gp-btn-control"
+                onClick={(e) => handleOption("children", "i", e)}
               >
                 +
               </button>
@@ -109,87 +130,26 @@ const GuestPicker = ({ initialOptions, onOptionsChange, onClose }) => {
           {/* Rooms */}
           <div className="gp-selector">
             <label className="gp-label">Rooms</label>
-            <div className="gp-control">
+            <div className="gp-control-wrapper">
               <button
                 type="button"
-                disabled={initialOptions.rooms.length <= 1}
-                className="gp-btn"
-                onClick={() => handleRemoveRoom(initialOptions.rooms.length - 1)}
+                disabled={!validOptions || validOptions.rooms <= 1}
+                className="gp-btn-control"
+                onClick={(e) => handleRemoveRoom(e)}
               >
                 −
               </button>
-              <span className="gp-value">{initialOptions.rooms.length}</span>
+              <span className="gp-value-control">{validOptions && validOptions.rooms ? validOptions.rooms : 0}</span>
               <button
                 type="button"
-                className="gp-btn"
-                onClick={handleAddRoom}
+                className="gp-btn-control"
+                onClick={(e) => handleAddRoom(e)}
               >
                 +
               </button>
             </div>
           </div>
         </div>
-
-        {/* Additional Rooms */}
-        {initialOptions.rooms.length > 1 && (
-          <div className="gp-additional">
-            <p className="gp-additional-title">Additional rooms</p>
-            {initialOptions.rooms.map((room, roomIndex) => (
-              roomIndex > 0 && (
-                <div key={roomIndex} className="gp-room-item">
-                  <span className="gp-room-label">Room {roomIndex + 1}</span>
-                  <div className="gp-room-controls">
-                    <div className="gp-control-group">
-                      <button
-                        type="button"
-                        disabled={room.adults <= 1}
-                        className="gp-btn-sm"
-                        onClick={() => handleOption(roomIndex, "adults", "d")}
-                      >
-                        −
-                      </button>
-                      <span className="gp-value-sm">{room.adults} adults</span>
-                      <button
-                        type="button"
-                        className="gp-btn-sm"
-                        onClick={() => handleOption(roomIndex, "adults", "i")}
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    <div className="gp-control-group">
-                      <button
-                        type="button"
-                        disabled={room.children <= 0}
-                        className="gp-btn-sm"
-                        onClick={() => handleOption(roomIndex, "children", "d")}
-                      >
-                        −
-                      </button>
-                      <span className="gp-value-sm">{room.children} children</span>
-                      <button
-                        type="button"
-                        className="gp-btn-sm"
-                        onClick={() => handleOption(roomIndex, "children", "i")}
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="gp-remove-btn"
-                      onClick={() => handleRemoveRoom(roomIndex)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              )
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

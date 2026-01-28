@@ -11,7 +11,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Scroll behavior controlled by ScrollToTop component */
+  scroll-behavior: auto;
 }
 
 body {

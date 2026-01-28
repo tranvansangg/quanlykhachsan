@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import './login.scss';
 
 const Login = ({ setIsAuthenticated }) => {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -41,69 +42,98 @@ const Login = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <div className="login-logo">🏨</div>
-          <h1>Hotel Admin</h1>
-          <p>Quản Lý Khách Sạn</p>
-        </div>
+    <div className="admin-login-page">
+      <div className="login-container-admin">
+        {/* Decorative Elements */}
+        <div className="decoration-blob blob-1"></div>
+        <div className="decoration-blob blob-2"></div>
 
-        <form onSubmit={handleSubmit} className="login-form">
-          {error && <div className="error-message">{error}</div>}
-
-          <div className="form-group">
-            <label htmlFor="username">Tên Đăng Nhập</label>
-            <input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Nhập tên đăng nhập"
-              required
-            />
+        {/* Main Card */}
+        <div className="login-card-admin">
+          {/* Header */}
+          <div className="login-header-admin">
+            <h1 className="title">Quản Lý Khách Sạn</h1>
+            <p className="subtitle">Admin Dashboard</p>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Mật Khẩu</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Nhập mật khẩu"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn-login"
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <div className="spinner-small"></div>
-                Đang đăng nhập...
-              </>
-            ) : (
-              <>
-                <LogIn size={18} />
-                Đăng Nhập
-              </>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="login-form-admin">
+            {/* Error Alert */}
+            {error && (
+              <div className="error-alert-admin">
+                <span className="error-icon">⚠</span>
+                <p>{error}</p>
+              </div>
             )}
-          </button>
-        </form>
 
-        <div className="login-footer">
-          <p>Demo Account:</p>
-          <code>admin / password123</code>
+            {/* Username Field */}
+            <div className="form-group-admin">
+              <label htmlFor="username" className="form-label-admin">
+                Tên Đăng Nhập
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Nhập tên đăng nhập"
+                className="form-input-admin"
+                required
+              />
+            </div>
+
+            {/* Password Field */}
+            <div className="form-group-admin">
+              <label htmlFor="password" className="form-label-admin">
+                Mật Khẩu
+              </label>
+              <div className="password-wrapper-admin">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Nhập mật khẩu"
+                  className="form-input-admin password-input-admin"
+                  required
+                />
+                <button
+                  type="button"
+                  className="toggle-password-btn-admin"
+                  onClick={() => setShowPassword(!showPassword)}
+                  title={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="btn-login-admin"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <div className="spinner-admin"></div>
+                  Đang đăng nhập...
+                </>
+              ) : (
+                'Đăng Nhập Admin'
+              )}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <div className="login-footer-admin">
+            <p>🔒 Quản lý khách sạn - Vui lòng đăng nhập với tài khoản của bạn</p>
+          </div>
         </div>
       </div>
-
-      <div className="login-background"></div>
     </div>
   );
 };
 
 export default Login;
+

@@ -41,42 +41,53 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Navbar />
-      <div className="login">
-        <div className="loginWrapper">
-          <div className="loginForm">
-            <h1 className="loginTitle">Đăng nhập</h1>
-            <p className="loginSubtitle">Chào mừng bạn quay lại HotelBook</p>
+      <div className="login-page">
+        <div className="login-container">
+          <div className="login-card">
+            {/* Header Card */}
+            <div className="login-card-header">
+              <h1 className="login-title">Đăng Nhập</h1>
+              <p className="login-subtitle">Chào mừng bạn quay lại HotelBook</p>
+            </div>
 
-            <form onSubmit={handleClick} className="form">
-              <div className="formGroup">
-                <label htmlFor="username">Tên đăng nhập</label>
+            {/* Form Section */}
+            <form onSubmit={handleClick} className="login-form">
+              {/* Username Field */}
+              <div className="form-group">
+                <label htmlFor="username" className="form-label">
+                  Tên đăng nhập
+                </label>
                 <input
                   type="text"
                   placeholder="Nhập tên đăng nhập của bạn"
                   id="username"
                   onChange={handleChange}
                   value={credentials.username}
-                  className="formInput"
+                  className="form-input"
                 />
               </div>
 
-              <div className="formGroup">
-                <label htmlFor="password">Mật khẩu</label>
-                <div className="passwordWrapper">
+              {/* Password Field */}
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">
+                  Mật khẩu
+                </label>
+                <div className="password-input-wrapper">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Nhập mật khẩu của bạn"
                     id="password"
                     onChange={handleChange}
                     value={credentials.password}
-                    className="formInput"
+                    className="form-input password-input"
                   />
                   <button
                     type="button"
-                    className="togglePassword"
+                    className="toggle-password-btn"
                     onClick={() => setShowPassword(!showPassword)}
+                    title={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                   >
                     <FontAwesomeIcon
                       icon={showPassword ? faEyeSlash : faEye}
@@ -85,58 +96,48 @@ const Login = () => {
                 </div>
               </div>
 
+              {/* Error Message */}
               {error && (
-                <div className="errorMessage">
-                  <p>{error.message || "Lỗi đăng nhập. Vui lòng thử lại."}</p>
+                <div className="error-alert">
+                  <span className="error-icon">⚠</span>
+                  <p>{typeof error === 'string' ? error : error.message || "Lỗi đăng nhập. Vui lòng thử lại."}</p>
                 </div>
               )}
 
+              {/* Submit Button */}
               <button
                 disabled={loading}
                 type="submit"
-                className="submitBtn"
+                className="login-btn"
               >
-                {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+                {loading ? (
+                  <>
+                    <span className="spinner"></span>
+                    Đang đăng nhập...
+                  </>
+                ) : (
+                  "Đăng Nhập"
+                )}
               </button>
             </form>
 
-            <div className="divider">
-              <span>hoặc</span>
-            </div>
-
-            <div className="socialLogin">
-              <button className="socialBtn google">
-                <span>🔵</span> Đăng nhập với Google
-              </button>
-              <button className="socialBtn facebook">
-                <span>📘</span> Đăng nhập với Facebook
-              </button>
-            </div>
-
-            <div className="loginFooter">
-              <p>
-                Chưa có tài khoản?{" "}
-                <Link to="/register" className="signupLink">
-                  Đăng ký ngay
-                </Link>
+            {/* Footer */}
+            <div className="login-card-footer">
+              <p className="signup-link">
+                Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
               </p>
-              <p>
-                <a href="#" className="forgotLink">
-                  Quên mật khẩu?
-                </a>
+              <p className="forgot-password-link">
+                <Link to="/forgot-password">Quên mật khẩu?</Link>
               </p>
             </div>
           </div>
 
-          <div className="loginImage">
-            <img
-              src="https://cf.bstatic.com/static/img/theme-index/flights_v2/search_flights_new_one_hero_blue_340x428.webp"
-              alt="Login"
-            />
-          </div>
+          {/* Decorative Elements */}
+          <div className="decoration-blob blob-1"></div>
+          <div className="decoration-blob blob-2"></div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

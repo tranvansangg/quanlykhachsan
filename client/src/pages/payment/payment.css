@@ -1,0 +1,335 @@
+/* Payment Page Styles */
+.paymentContainer {
+  min-height: calc(100vh - 70px - 200px);
+  background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paymentContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1400px;
+  width: 100%;
+}
+
+/* Error Styles */
+.paymentErrorContainer {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.paymentErrorContainer h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+}
+
+.paymentErrorContainer p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.backBtn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Success Status */
+.paymentSuccess,
+.paymentFailed {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.successIcon {
+  font-size: 80px;
+  color: #16a34a;
+  margin-bottom: 20px;
+  animation: successBounce 0.6s ease;
+}
+
+.failedIcon {
+  font-size: 80px;
+  color: #dc2626;
+  margin-bottom: 20px;
+}
+
+@keyframes successBounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.paymentSuccess h2,
+.paymentFailed h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.paymentSuccess p,
+.paymentFailed p {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.bookingDetails {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.detailRow strong {
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.amount {
+  color: #667eea;
+  font-size: 18px;
+}
+
+.redirectMsg {
+  font-size: 14px;
+  color: #9ca3af;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.retryBtn {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Payment Summary */
+.paymentSummary {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.paymentSummary h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 24px 0;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.summarySection {
+  margin-bottom: 24px;
+}
+
+.summarySection h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 16px 0;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.summarySection:first-child h4 {
+  border-top: none;
+  padding-top: 0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.summaryRow strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* Rooms List */
+.roomsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.roomSummaryItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.roomSummaryInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.roomName {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.roomPrice {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.roomQuantity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+}
+
+.quantity {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.subtotal {
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Summary Total */
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 2px solid #e5e7eb;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-top: 16px;
+}
+
+.totalAmount {
+  color: #667eea;
+  font-size: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .paymentContent {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .paymentSummary {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .paymentContainer {
+    padding: 20px 10px;
+    min-height: auto;
+  }
+
+  .paymentSuccess,
+  .paymentFailed {
+    padding: 40px 20px;
+  }
+
+  .successIcon,
+  .failedIcon {
+    font-size: 60px;
+  }
+
+  .paymentSummary {
+    padding: 20px;
+  }
+
+  .bookingDetails {
+    max-width: 100%;
+  }
+}

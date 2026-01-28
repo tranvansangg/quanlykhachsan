@@ -4,6 +4,7 @@ import {
   deleteRoom,
   getRoom,
   getRooms,
+  getRoomsByHotel,
   updateRoom,
   updateRoomAvailability,
 } from "../controllers/room.js";
@@ -20,6 +21,7 @@ router.put("/:id", verifyAdmin, updateRoom);
 router.delete("/:id/:hotelid", verifyAdmin, deleteRoom);
 //GET
 
+router.get("/hotel/:hotelId", getRoomsByHotel);
 router.get("/:id", getRoom);
 //GET ALL
 

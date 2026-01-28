@@ -57,6 +57,67 @@
   flex: 1;
 }
 
+.hotelHeaderActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.hotelHeader .header-favorite-btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hotelHeader .header-favorite-btn:hover {
+  border-color: #999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hotelHeader .header-favorite-btn svg {
+  font-size: 20px;
+  color: #999;
+}
+
+.hotelHeader .header-favorite-btn.active svg {
+  color: #ff0000;
+}
+
+/* Ensure favorite button in header is visible and aligned */
+.hotelHeader .favorite-btn {
+  margin-left: 12px;
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  z-index: auto;
+  background: transparent;
+  /* remove white pill in header */
+  box-shadow: none;
+  /* remove shadow so it doesn't 'float' */
+  border-radius: 6px;
+  padding: 6px;
+  border: none;
+}
+
+.hotelHeader .favorite-btn .heart-icon {
+  font-size: 18px;
+  color: #c0392b;
+  /* keep visible color when active */
+}
+
 .hotelTitle {
   font-size: 32px;
   font-weight: 700;
@@ -247,10 +308,27 @@
 }
 
 .hotelSection h2 {
-  font-size: 22px;
-  color: #333;
-  margin: 0 0 20px 0;
-  font-weight: 700;
+  font-size: 32px;
+  color: #1a1a1a;
+  margin: 0 0 30px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.hotelSection h3 {
+  font-size: 32px;
+  color: #1a1a1a;
+  margin: 0 0 30px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+h3.hotelSection {
+  font-size: 32px;
+  color: #1a1a1a;
+  margin: 0 0 30px 0;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .hotelDesc {

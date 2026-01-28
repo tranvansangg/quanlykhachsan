@@ -21,6 +21,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/reserve/Reserve";
+import FavoriteButton from "../../components/favoriteButton/FavoriteButton";
 
 const Hotel = () => {
   const location = useLocation();
@@ -33,7 +34,10 @@ const Hotel = () => {
   const { data, loading, error } = useFetch(`/hotels/${id}`);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { dates } = useContext(SearchContext);
+  const { dates: contextDates } = useContext(SearchContext);
+
+  // Ensure dates is not null
+  const dates = contextDates && contextDates.length > 0 ? contextDates : [{ startDate: new Date(), endDate: new Date() }];
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -41,7 +45,9 @@ const Hotel = () => {
     return Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
   }
 
-  const days = dates ? dayDifference(dates[0].endDate, dates[0].startDate) : 0;
+  const days = dates && dates.length > 0 && dates[0]?.startDate && dates[0]?.endDate
+    ? dayDifference(new Date(dates[0].endDate), new Date(dates[0].startDate))
+    : 0;
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -86,7 +92,11 @@ const Hotel = () => {
           <div className="spinner" />
           <p>Đang tải thông tin khách sạn...</p>
         </div>
-      ) : (
+      ) : error ? (
+        <div className="errorHotel">
+          <p>Không thể tải thông tin khách sạn. Vui lòng thử lại.</p>
+        </div>
+      ) : data && Object.keys(data).length > 0 ? (
         <div className="hotelContainer">
           {open && (
             <div className="slider">
@@ -102,24 +112,29 @@ const Hotel = () => {
           <div className="hotelWrapper">
             <div className="hotelHeader">
               <div className="hotelHeaderInfo">
-                <h1 className="hotelTitle">{data.name}</h1>
-                <div className="hotelAddress">
-                  <FontAwesomeIcon icon={faLocationDot} />
-                  <span>{data.address}</span>
-                </div>
-                <div className="hotelRating">
-                  <div className="ratingBox">
-                    <span className="ratingLabel">Sao</span>
-                    <div className="ratingStars">
-                      {Array(Math.floor(data.star || 4)).fill().map((_, i) => (
-                        <FontAwesomeIcon key={i} icon={faStar} />
-                      ))}
+                <div style={{ flex: 1 }}>
+                  <h1 className="hotelTitle">{data?.name || "Khách sạn"}</h1>
+                  <div className="hotelAddress">
+                    <FontAwesomeIcon icon={faLocationDot} />
+                    <span>{data?.address || "Địa chỉ không có"}</span>
+                  </div>
+                  <div className="hotelRating">
+                    <div className="ratingBox">
+                      <span className="ratingLabel">Sao</span>
+                      <div className="ratingStars">
+                        {Array(Math.floor(data?.star || 4)).fill().map((_, i) => (
+                          <FontAwesomeIcon key={i} icon={faStar} />
+                        ))}
+                      </div>
+                      <span className="ratingScore">{data?.star || 4}</span>
                     </div>
-                    <span className="ratingScore">{data.star || 4}</span>
                   </div>
                 </div>
               </div>
-              <button className="bookNowBtn" onClick={handleClick}>Giữ phòng ngay</button>
+              <div className="hotelHeaderActions">
+                <FavoriteButton hotelId={data?._id} className="header-favorite-btn" />
+                <button className="bookNowBtn" onClick={handleClick}>Giữ phòng ngay</button>
+              </div>
             </div>
 
             <div className="hotelImages">
@@ -137,7 +152,7 @@ const Hotel = () => {
               <div className="hotelMain">
                 <div className="hotelSection">
                   <h2>Về chỗ ở này</h2>
-                  <p className="hotelDesc">{data.desc}</p>
+                  <p className="hotelDesc">{data?.desc || "Không có mô tả"}</p>
                 </div>
 
                 <div className="hotelSection">
@@ -159,19 +174,19 @@ const Hotel = () => {
                     <div className="stayInfo">
                       <div className="infoRow">
                         <span className="infoLabel">Loại khách sạn:</span>
-                        <span className="infoValue">{data.type}</span>
+                        <span className="infoValue">{data?.type || "-"}</span>
                       </div>
                       <div className="infoRow">
                         <span className="infoLabel">Thành phố:</span>
-                        <span className="infoValue">{data.city}</span>
+                        <span className="infoValue">{data?.city || "-"}</span>
                       </div>
                       <div className="infoRow">
                         <span className="infoLabel">Địa chỉ:</span>
-                        <span className="infoValue">{data.address}</span>
+                        <span className="infoValue">{data?.address || "-"}</span>
                       </div>
                       <div className="infoRow">
                         <span className="infoLabel">Khoảng cách:</span>
-                        <span className="infoValue">{data.distance}</span>
+                        <span className="infoValue">{data?.distance || "-"}</span>
                       </div>
                     </div>
                     <button className="reserveBtn" onClick={handleClick}>Giữ Phòng Ngay</button>
@@ -188,11 +203,18 @@ const Hotel = () => {
                 </div>
               </div>
 
+              {/* Phòng trống */}
               <div className="reserveTableContainer" ref={reserveRef}>
+                <h3 className="hotelSection">Phòng trống</h3>
+
                 <Reserve hotelId={id} dates={dates} />
               </div>
             </div>
           </div>
+        </div>
+      ) : (
+        <div className="emptyHotel">
+          <p>Không tìm thấy thông tin khách sạn</p>
         </div>
       )}
       <MailList />

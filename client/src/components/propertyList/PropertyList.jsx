@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,6 +11,7 @@ import {
 import "./propertyList.css";
 
 const PropertyList = () => {
+  const navigate = useNavigate();
   const { data, loading, error } = useFetch("/hotels/countByType");
 
   const images = [
@@ -22,6 +24,61 @@ const PropertyList = () => {
 
   const icons = [faBed, faBuilding, faTreeCity, faCab, faHouse];
 
+  // Map type names from API response (lowercase) to URL params
+  const typeMap = {
+    "hotel": "hotel",
+    "apartments": "apartment",
+    "resorts": "resort",
+    "villas": "villa",
+    "cabins": "cabin"
+  };
+
+  const handlePropertyClick = (type) => {
+    // Normalize type name - convert "apartments" to "apartment", "resorts" to "resort", etc.
+    const normalizedType = typeMap[type.toLowerCase()] || type.toLowerCase();
+
+    // Save property type to localStorage
+    localStorage.setItem("selectedPropertyType", JSON.stringify({
+      type: normalizedType,
+      timestamp: new Date().toISOString(),
+    }));
+
+    console.log("✓ Selected property type:", normalizedType);
+
+    // Get saved search data (dates, guests) from localStorage
+    const savedSearch = localStorage.getItem("searchData");
+    let searchParams = "";
+
+    // Always add type filter (show all hotels of this type)
+    searchParams = `type=${encodeURIComponent(normalizedType)}`;
+
+    if (savedSearch) {
+      try {
+        const searchData = JSON.parse(savedSearch);
+        console.log("✓ Using saved search data:", searchData);
+
+        // Add dates to URL params if available
+        if (searchData.dates && searchData.dates.length > 0) {
+          const startDate = new Date(searchData.dates[0].startDate).toISOString();
+          const endDate = new Date(searchData.dates[0].endDate).toISOString();
+          searchParams += `&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`;
+          console.log("✓ Added dates to search params");
+        }
+
+        // Add guest options to URL params if available
+        if (searchData.options) {
+          searchParams += `&options=${encodeURIComponent(JSON.stringify(searchData.options))}`;
+          console.log("✓ Added guest options to search params");
+        }
+      } catch (error) {
+        console.error("Error parsing search data:", error);
+      }
+    }
+
+    // Navigate to hotels list with type filter and saved search data
+    navigate(`/hotels?${searchParams}`);
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 p-6 max-w-7xl mx-auto">
       {loading ? (
@@ -32,7 +89,8 @@ const PropertyList = () => {
         data &&
         images.map((img, i) => (
           <div 
-            key={i} 
+            key={i}
+            onClick={() => handlePropertyClick(data[i]?.type)}
             className="group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-36 sm:h-40"
           >
             <div className="relative w-full h-full overflow-hidden">

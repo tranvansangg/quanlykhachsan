@@ -12,6 +12,9 @@ import "./customCalendar.css";
 const CustomCalendar = ({ startDate, endDate, onDateChange }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  // Ensure onDateChange is a function
+  const handleDateChangeCallback = typeof onDateChange === "function" ? onDateChange : () => {};
+
   const start = startOfMonth(currentMonth);
   const end = endOfMonth(currentMonth);
   const daysInMonth = eachDayOfInterval({ start, end });
@@ -40,7 +43,8 @@ const CustomCalendar = ({ startDate, endDate, onDateChange }) => {
 
   const handleDateClick = (day) => {
     if (!day) return;
-    onDateChange(day);
+    console.log("Date clicked:", day);
+    handleDateChangeCallback(day);
   };
 
   const handlePrevMonth = () => {

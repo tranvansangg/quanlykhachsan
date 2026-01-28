@@ -1,10 +1,48 @@
+/* Featured Properties Section */
+.featured-properties-section {
+  width: 100%;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
 .featured-properties-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+}
+
+/* Section Header */
+.featured-properties-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.featured-properties-header h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 12px 0;
+}
+
+.featured-properties-header p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .featured-properties-section {
+    padding: 40px 16px;
+  }
+
+  .featured-properties-header h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .featured-properties-header p {
+    font-size: 14px;
+  }
 }
 
 .property-card {
@@ -166,7 +204,7 @@
   font-weight: 500;
 }
 
-.fpRating > button {
+.fpRating>button {
   background-color: #003580;
   color: white;
   border: none;
@@ -175,7 +213,7 @@
   font-weight: bold;
 }
 
-.fpRating > span {
+.fpRating>span {
   font-size: 14px;
 }
 

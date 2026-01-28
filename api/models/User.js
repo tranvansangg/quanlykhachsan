@@ -38,6 +38,61 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    otp: {
+      type: String,
+      default: null,
+    },
+    otpExpiry: {
+      type: Date,
+      default: null,
+    },
+    favorites: {
+      type: [String], // Array of hotel IDs
+      default: [],
+    },
+    address: {
+      type: String,
+      default: "",
+    },
+    settings: {
+      language: {
+        type: String,
+        default: "vi",
+      },
+      defaultCurrency: {
+        type: String,
+        default: "VND",
+      },
+      theme: {
+        type: String,
+        enum: ["light", "dark"],
+        default: "light",
+      },
+      emailNotifications: {
+        type: Boolean,
+        default: true,
+      },
+      bookingNotifications: {
+        type: Boolean,
+        default: true,
+      },
+      reviewNotifications: {
+        type: Boolean,
+        default: true,
+      },
+      priceAlerts: {
+        type: Boolean,
+        default: false,
+      },
+      privateProfile: {
+        type: Boolean,
+        default: false,
+      },
+      showEmail: {
+        type: Boolean,
+        default: true,
+      },
+    },
   },
   { timestamps: true }
 );

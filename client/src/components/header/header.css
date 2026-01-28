@@ -91,7 +91,7 @@
   display: grid;
   grid-template-columns: 1.2fr 1fr 1.3fr 140px;
   gap: 12px;
-  align-items: center;
+  align-items: stretch;
   margin-bottom: 0;
 }
 
@@ -99,6 +99,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  justify-content: flex-end;
 }
 
 .search-label {
@@ -121,6 +122,8 @@
   transition: all 0.2s ease;
   background: #fafafa;
   color: #333;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 
 .input-base::placeholder {
@@ -191,6 +194,8 @@ select.input-base:focus {
   box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
   width: 100%;
   min-width: 120px;
+  box-sizing: border-box;
+  align-self: stretch;
 }
 
 .search-button:hover {
@@ -214,15 +219,104 @@ select.input-base:focus {
   border-radius: 0 0 8px 8px;
   max-height: 300px;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 100;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Add CSS for search input wrapper to ensure proper alignment */
+.search-input-wrapper {
+  display: flex;
+  align-items: stretch;
+  height: 44px;
+}
+
+.search-input-wrapper .input-base {
+  display: block !important;
+}
+
+/* Header Destination Dropdown - Specific styling */
+.header-destination-input {
+  position: relative;
+  z-index: 40;
+}
+
+.header-destination-input .input-base {
+  border-radius: 6px 6px 0 0;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.header-destination-input .input-base:focus {
+  border-radius: 6px 6px 0 0;
+}
+
+/* Dropdown suggestions container for header */
+.header-destination-dropdown {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 50;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.header-destination-dropdown .suggestion-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #475569;
+  background: white;
+  transition: none !important;
+}
+
+.header-destination-dropdown .suggestion-item:hover {
+  background: white !important;
+  color: #475569 !important;
+  padding: 12px 16px !important;
+}
+
+.header-destination-dropdown .suggestion-item:active {
+  background: white !important;
+  color: #475569 !important;
+}
+
+.header-destination-dropdown .suggestion-item:last-child {
+  border-bottom: none;
+}
+
+/* Modern suggestion dropdown (Tailwind based) */
+.suggestions-dropdown-modern {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 50;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .suggestion-item {
   padding: 12px 14px;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
-  transition: background-color 0.2s ease;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -230,9 +324,8 @@ select.input-base:focus {
   color: #475569;
 }
 
-.suggestion-item:hover {
-  background-color: #f8fafc;
-  color: #003580;
+.suggestion-item:last-child {
+  border-bottom: none;
 }
 
 /* Date Picker Container */

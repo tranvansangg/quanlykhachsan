@@ -1,0 +1,417 @@
+.bookingSearchBar {
+  width: 100%;
+  background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin: 16px auto;
+  max-width: 1400px;
+  padding: 0 20px;
+}
+
+/* ========== COMPACT VIEW ========== */
+.searchBarCompact {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 12px 0;
+  position: relative;
+}
+
+.compactContent {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.compactContent:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-color: #667eea;
+}
+
+.compactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  flex: 1;
+  min-width: 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border-right: 1px solid #f0f0f0;
+}
+
+.compactItem:last-of-type {
+  border-right: none;
+}
+
+.compactItem:hover {
+  background: #f9fafb;
+}
+
+.compactIcon {
+  width: 18px;
+  height: 18px;
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.compactText {
+  flex: 1;
+  min-width: 0;
+}
+
+.compactLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 2px;
+}
+
+.compactValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compactButton {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #667eea 0%, #5568d3 100%);
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: 10px;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px;
+}
+
+.compactButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5568d3 0%, #4453b8 100%);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.compactButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.compactButton:disabled {
+  background: linear-gradient(135deg, #d1d5db 0%, #bfbfbf 100%);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Loading Spinner */
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========== DATE PICKER DROPDOWN ========== */
+.datePickerDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+  margin-top: -1px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  gap: 20px;
+  animation: slideDown 0.2s ease;
+}
+
+.datePickerItem {
+  flex: 1;
+}
+
+.datePickerItem label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.datePickerInput {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1e293b;
+  background: #fff;
+  outline: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.datePickerInput:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.datePickerInput::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  filter: invert(0.8);
+}
+
+.datePickerDisplay {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ========== GUEST DROPDOWN ========== */
+.guestDropdownContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 0;
+  margin-top: -1px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guestRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #f0f0f0;
+  gap: 20px;
+}
+
+.guestRow:last-child {
+  border-bottom: none;
+}
+
+.guestInfo {
+  flex: 1;
+}
+
+.guestName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.guestDesc {
+  font-size: 12px;
+  color: #999;
+}
+
+.guestCounter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.guestBtn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 0;
+}
+
+.guestBtn:hover:not(:disabled) {
+  border-color: #667eea;
+  background: #f0f0ff;
+}
+
+.guestBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.guestInput {
+  width: 40px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.guestInput::-webkit-outer-spin-button,
+.guestInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .compactContent {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .compactItem {
+    width: 100%;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .compactItem:last-of-type {
+    border-bottom: none;
+  }
+
+  .compactDivider {
+    display: none;
+  }
+
+  .compactButton {
+    width: 100%;
+    padding: 14px;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .datePickerDropdown {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .guestDropdownContainer {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchBarCompact {
+    padding: 8px 12px;
+  }
+
+  .compactContent {
+    border-radius: 6px;
+  }
+
+  .compactItem {
+    padding: 12px 12px;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .compactLabel {
+    font-size: 10px;
+  }
+
+  .compactValue {
+    font-size: 13px;
+  }
+
+  .compactIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .compactButton {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
+  .datePickerDropdown {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .datePickerInput {
+    font-size: 14px;
+  }
+
+  .guestRow {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 16px;
+  }
+
+  .guestCounter {
+    align-self: flex-end;
+  }
+}

@@ -8,42 +8,56 @@ import {
   faCog,
   faStar,
   faSearch,
+  faTrash,
+  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import axiosInstance from "../../utils/axiosInstance";
 import ServiceTabs from "../serviceTabs/ServiceTabs";
 import "../navbar/navbar.css";
 
 const Navbar = () => {
   const { user, dispatch } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showStickyTabs, setShowStickyTabs] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
-  // IntersectionObserver để track header visibility
   useEffect(() => {
-    const headerElement = document.getElementById("headerHero");
-    if (!headerElement) return;
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Nếu header còn visible => ẩn sticky tabs
-        // Nếu header ra khỏi viewport => hiển thị sticky tabs
-        setShowStickyTabs(!entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
+    if (showDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
-    observer.observe(headerElement);
-
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
     setShowDropdown(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await axiosInstance.delete(`/users/${user._id}`);
+      dispatch({ type: "LOGOUT" });
+      navigate("/");
+      setShowDropdown(false);
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      console.error("Lỗi xóa tài khoản:", error);
+      alert("Không thể xóa tài khoản. Vui lòng thử lại!");
+    }
   };
 
   return (
@@ -83,10 +97,12 @@ const Navbar = () => {
                 {/* User Dropdown */}
                 <div
                   className="relative"
-                  onMouseEnter={() => setShowDropdown(true)}
-                  onMouseLeave={() => setShowDropdown(false)}
+                  ref={dropdownRef}
                 >
-                  <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-500 transition-colors">
+                  <button 
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-500 transition-colors"
+                  >
                     <div className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-blue-900 font-bold text-sm">
                       {user.username?.charAt(0).toUpperCase() || "U"}
                     </div>
@@ -119,17 +135,17 @@ const Navbar = () => {
                           <span className="text-sm">Tài khoản của tôi</span>
                         </button>
                         <button
-                          onClick={() => { navigate("/bookings"); setShowDropdown(false); }}
+                          onClick={() => { navigate("/my-bookings"); setShowDropdown(false); }}
                           className="w-full px-4 py-2 flex items-center gap-3 text-slate-700 hover:bg-blue-50 transition-colors"
                         >
-                          <FontAwesomeIcon icon={faHeart} className="text-sm text-blue-600" />
-                          <span className="text-sm">Đơn đặt phòng</span>
+                          <FontAwesomeIcon icon={faCalendar} className="text-sm text-blue-600" />
+                          <span className="text-sm">Lịch sử đặt phòng</span>
                         </button>
                         <button
                           onClick={() => { navigate("/favorites"); setShowDropdown(false); }}
                           className="w-full px-4 py-2 flex items-center gap-3 text-slate-700 hover:bg-blue-50 transition-colors"
                         >
-                          <FontAwesomeIcon icon={faStar} className="text-sm text-blue-600" />
+                          <FontAwesomeIcon icon={faHeart} className="text-sm text-blue-600" />
                           <span className="text-sm">Danh sách yêu thích</span>
                         </button>
                         <button
@@ -139,6 +155,37 @@ const Navbar = () => {
                           <FontAwesomeIcon icon={faCog} className="text-sm text-blue-600" />
                           <span className="text-sm">Cài đặt</span>
                         </button>
+
+                        {/* Delete Account Button */}
+                        <button
+                          onClick={() => setShowDeleteConfirm(true)}
+                          className="w-full px-4 py-2 flex items-center gap-3 text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          <FontAwesomeIcon icon={faTrash} className="text-sm" />
+                          <span className="text-sm">Xóa tài khoản</span>
+                        </button>
+
+                        {/* Delete Confirmation */}
+                        {showDeleteConfirm && (
+                          <div className="px-4 py-3 bg-red-50 border-t border-red-200">
+                            <p className="text-xs text-red-700 mb-2 font-semibold">Bạn chắc chắn muốn xóa tài khoản?</p>
+                            <p className="text-xs text-red-600 mb-3">Hành động này không thể hoàn tác. Tất cả dữ liệu sẽ bị xóa vĩnh viễn.</p>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={handleDeleteAccount}
+                                className="flex-1 px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors font-medium"
+                              >
+                                Xóa vĩnh viễn
+                              </button>
+                              <button
+                                onClick={() => setShowDeleteConfirm(false)}
+                                className="flex-1 px-2 py-1 bg-slate-300 text-slate-700 text-xs rounded hover:bg-slate-400 transition-colors font-medium"
+                              >
+                                Hủy
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Logout */}
@@ -175,12 +222,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Sticky Service Tabs - Hiển thị khi header ra khỏi viewport */}
-        {showStickyTabs && (
-          <div className="border-t border-blue-700 bg-white bg-opacity-95 backdrop-blur-sm">
-            <ServiceTabs sticky={true} />
-          </div>
-        )}
+        {/* Sticky Service Tabs - Removed */}
       </div>
     </nav>
   );

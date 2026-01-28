@@ -7,13 +7,11 @@ import {
   faParking,
   faSwimmingPool,
   faCheck,
-  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import FavoriteButton from "../favoriteButton/FavoriteButton";
 import "./searchItem.css";
 
 const SearchItem = ({ item }) => {
-  const [liked, setLiked] = useState(false);
 
   const renderStars = (star) => {
     return Array(Math.floor(star))
@@ -30,7 +28,7 @@ const SearchItem = ({ item }) => {
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow border border-slate-200">
+    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-white rounded-lg shadow hover:shadow-lg transition-shadow border border-slate-200 relative">
       {/* Image */}
       <div className="relative w-full sm:w-48 h-48 rounded-lg overflow-hidden flex-shrink-0">
         <img 
@@ -38,16 +36,9 @@ const SearchItem = ({ item }) => {
           alt={item.name} 
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
         />
-        <button
-          className={`absolute top-3 right-3 p-2 rounded-full transition-colors ${
-            liked 
-              ? 'bg-red-500 text-white' 
-              : 'bg-white/90 text-slate-600 hover:bg-white hover:text-red-500'
-          }`}
-          onClick={() => setLiked(!liked)}
-        >
-          <FontAwesomeIcon icon={faHeart} className="text-lg" />
-        </button>
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
+          <FavoriteButton hotelId={item._id} />
+        </div>
       </div>
 
       {/* Description */}

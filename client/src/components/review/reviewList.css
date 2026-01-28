@@ -1,0 +1,295 @@
+/* ReviewList.css */
+.reviewListContainer {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.loading,
+.error,
+.noReviews {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+}
+
+.loading {
+  color: #666;
+}
+
+.error {
+  color: #d32f2f;
+  background: #ffebee;
+  border-radius: 4px;
+  border-left: 4px solid #d32f2f;
+  padding: 16px;
+}
+
+.noReviews {
+  color: #999;
+  background: #f5f5f5;
+  border-radius: 4px;
+  padding: 32px 20px;
+}
+
+/* Review Summary */
+.reviewSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f0f0f0;
+  gap: 32px;
+}
+
+.ratingBox {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.ratingNumber {
+  font-size: 48px;
+  font-weight: bold;
+  min-width: 80px;
+  text-align: center;
+}
+
+.ratingMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ratingStars {
+  display: flex;
+  gap: 2px;
+}
+
+.ratingStars .star {
+  font-size: 20px;
+}
+
+.reviewCount {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Sort Controls */
+.sortControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sortControls label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.sortSelect {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.sortSelect:hover {
+  border-color: #2196F3;
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+/* Reviews List */
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.reviewCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fafafa;
+  transition: box-shadow 0.2s;
+}
+
+.reviewCard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.reviewerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reviewerName {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.reviewerCountry {
+  font-size: 12px;
+  color: #666;
+}
+
+.verifiedBadge {
+  background: #4caf50;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.stars .star {
+  font-size: 16px;
+}
+
+.ratingText {
+  font-weight: 600;
+  color: #ffc107;
+  font-size: 14px;
+}
+
+.reviewComment {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  word-wrap: break-word;
+}
+
+/* Review Points */
+.reviewPoints {
+  margin: 12px 0;
+  padding: 12px;
+  background: white;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.positivePoints,
+.negativePoints {
+  font-size: 13px;
+}
+
+.positivePoints strong {
+  color: #4caf50;
+}
+
+.negativePoints strong {
+  color: #f44336;
+}
+
+.positivePoints ul,
+.negativePoints ul {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+}
+
+.positivePoints li,
+.negativePoints li {
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+
+.positivePoints li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4caf50;
+}
+
+.negativePoints li:before {
+  content: "✗";
+  position: absolute;
+  left: 0;
+  color: #f44336;
+}
+
+.reviewFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #999;
+  margin-top: 12px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 12px;
+}
+
+.reviewDate {
+  font-weight: 500;
+}
+
+.reviewUpdated {
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reviewSummary {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sortControls {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .sortSelect {
+    width: 100%;
+  }
+
+  .reviewHeader {
+    flex-direction: column;
+  }
+
+  .ratingBox {
+    width: 100%;
+  }
+}

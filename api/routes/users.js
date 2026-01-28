@@ -5,6 +5,8 @@ import {
   getUser,
   getUsers,
   setUserDisabled,
+  changePassword,
+  updateUserSettings,
 } from "../controllers/user.js";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
@@ -30,6 +32,12 @@ router.delete("/:id", verifyUser, deleteUser);
 
 //LOCK / UNLOCK user (admin only) - body optional { disabled: true|false }
 router.put("/disable/:id", verifyAdmin, setUserDisabled);
+
+//CHANGE PASSWORD
+router.post("/:id/change-password", verifyUser, changePassword);
+
+//UPDATE SETTINGS
+router.put("/:id/settings", verifyUser, updateUserSettings);
 
 //GET
 router.get("/:id", verifyUser, getUser);

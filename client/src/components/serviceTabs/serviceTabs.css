@@ -1,124 +1,164 @@
-/* Service Tabs Container */
-.serviceTabsContainer {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 48px;
-    overflow-x: auto;
-    padding-bottom: 16px;
-    scroll-behavior: smooth;
+.service-tabs {
+  width: 100%;
+  padding: 20px 0;
+  background: transparent;
 }
 
-@media (min-width: 768px) {
-    .serviceTabsContainer {
-        gap: 16px;
-    }
+.service-tabs-wrapper {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.serviceTabsContainer.sticky {
-    margin-bottom: 0;
-    padding: 0;
+.service-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1f2937;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-/* Tabs Wrapper */
-.serviceTabsWrapper {
-    display: flex;
-    gap: 8px;
-    width: 100%;
+.service-tab:hover {
+  background: white;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #1f2937;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
-.serviceTabsWrapper.sticky-wrapper {
-    gap: 0px;
-    padding: 0 8px;
-    max-width: fit-content;
-    background: linear-gradient(to right, #2563eb, #3b82f6, #2563eb);
-    padding-top: 4px;
-    padding-bottom: 4px;
+.service-tab:hover .tab-icon {
+  color: #1f2937;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
-/* Service Tab Button */
-.serviceTabButton {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    white-space: nowrap;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
+.service-tab:hover .tab-label {
+  color: #1f2937;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.service-tab.active {
+  background: white;
+  border-color: transparent;
+  color: #1f2937;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.service-tab.active .tab-icon {
+  font-size: 17px;
+  color: #1f2937;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.service-tab.active .tab-label {
+  color: #1f2937;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.service-tab .tab-icon {
+  font-size: 16px;
+  transition: all 0.3s ease;
+  color: white;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+.service-tab .tab-label {
+  white-space: nowrap;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: white;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Sticky mode */
+.service-tabs.sticky-mode {
+  padding: 12px 0;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.service-tabs.sticky-mode .service-tab {
+  background: #f8fafc;
+  border-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.service-tabs.sticky-mode .service-tab:hover {
+  background: white;
+  border-color: #1e40af;
+  color: #1e40af;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.1);
+}
+
+.service-tabs.sticky-mode .service-tab.active {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  color: white;
+  border-color: #1e40af;
+}
+
+@media (max-width: 1024px) {
+  .service-tabs-wrapper {
+    gap: 10px;
+  }
+
+  .service-tab {
+    padding: 11px 18px;
     font-size: 14px;
+  }
 }
 
-/* Hero Header Variant */
-.serviceTabButton:not(.sticky-variant) {
-    color: white;
-    background: transparent;
-}
-
-.serviceTabButton:not(.sticky-variant).active {
-    background: white;
-    color: #0071c2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.serviceTabButton:not(.sticky-variant):not(.active):hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* Navbar Sticky Variant */
-.serviceTabButton.sticky-variant {
-    color: white;
-    background: transparent;
-    padding: 4px 8px;
-    font-size: 13px;
-}
-
-.serviceTabButton.sticky-variant.active {
-    color: white;
-    border-bottom: 3px solid white;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-}
-
-.serviceTabButton.sticky-variant:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.15);
-}
-
-/* Icon */
-.serviceTabIcon {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Label */
-.serviceTabLabel {
-    font-weight: 500;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-    .serviceTabsContainer {
-        gap: 4px;
-        margin-bottom: 32px;
-    }
+  .service-tabs {
+    padding: 16px 0;
+  }
 
-    .serviceTabButton {
-        padding: 6px 12px;
-        font-size: 12px;
-        gap: 6px;
-    }
+  .service-tabs-wrapper {
+    gap: 8px;
+  }
 
-    .serviceTabButton.sticky-variant {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
+  .service-tab {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
 
-    .serviceTabIcon {
-        font-size: 12px;
-    }
+  .service-tab .tab-icon {
+    font-size: 14px;
+  }
+
+  .service-tab .tab-label {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-tabs {
+    padding: 12px 0;
+  }
+
+  .service-tabs-wrapper {
+    gap: 6px;
+  }
+
+  .service-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 18px;
+  }
+
+  .service-tab .tab-icon {
+    font-size: 13px;
+  }
+
+  .service-tab .tab-label {
+    font-size: 12px;
+  }
 }

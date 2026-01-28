@@ -7,11 +7,13 @@ import {
     Users,
     MessageSquare,
     LogOut,
-    Menu
+    Menu,
+    BarChart3,
+    BookOpen
 } from 'lucide-react';
 import './Sidebar.scss';
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({ isOpen, setIsOpen, onLogout }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -21,13 +23,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         { path: '/rooms', label: 'Phòng', icon: DoorOpen },
         { path: '/users', label: 'Người Dùng', icon: Users },
         { path: '/reviews', label: 'Đánh Giá', icon: MessageSquare },
+        { path: '/bookings', label: 'Đặt Phòng', icon: BookOpen },
+        { path: '/statistics', label: 'Thống Kê', icon: BarChart3 },
     ];
 
     const isActive = (path) => location.pathname === path;
 
     const handleLogout = () => {
         if (window.confirm('Bạn có chắc muốn đăng xuất?')) {
-            localStorage.removeItem('token');
+            onLogout();
             navigate('/login');
         }
     };

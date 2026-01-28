@@ -1,23 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { format, addDays, differenceInDays, isBefore, startOfDay, addMonths } from 'date-fns';
+import { format, addDays, differenceInDays, isBefore, startOfDay, addMonths, isAfter, isSameDay } from 'date-fns';
 import './DateRangePicker.css';
 
-const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initialEndDate = null }) => {
-  const [startDate, setStartDate] = useState(initialStartDate);
-  const [endDate, setEndDate] = useState(initialEndDate);
+const DateRangePicker = ({ onDateChange, onClose, dates = null }) => {
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [hoverDate, setHoverDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState('startDate');
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const containerRef = useRef(null);
 
-  // Initialize with today and tomorrow
+  // Initialize with dates from props or today/tomorrow
   useEffect(() => {
-    if (!initialStartDate || !initialEndDate) {
+    if (dates && dates.length > 0 && dates[0].startDate && dates[0].endDate) {
+      setStartDate(startOfDay(new Date(dates[0].startDate)));
+      setEndDate(startOfDay(new Date(dates[0].endDate)));
+    } else {
       const today = startOfDay(new Date());
       const tomorrow = addDays(today, 1);
       setStartDate(today);
       setEndDate(tomorrow);
     }
+    setCurrentMonth(new Date());
   }, []);
 
   // Handle click outside
@@ -32,6 +36,16 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
+  // Calculate nights using timestamp (correct calculation)
+  const calculateNights = (start, end) => {
+    if (!start || !end) return 0;
+    const startTime = startOfDay(start).getTime();
+    const endTime = startOfDay(end).getTime();
+    const diffMs = endTime - startTime;
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    return Math.max(0, diffDays);
+  };
+
   const isDateInRange = (date) => {
     if (!startDate || !endDate) return false;
     const dateToCheck = startOfDay(date);
@@ -45,9 +59,10 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
 
   const isEndDate = (date) => {
     if (!endDate) return false;
-    return startOfDay(date).getTime() === startOfDay(endDate).getTime();
+    return isSameDay(startOfDay(date), startOfDay(endDate));
   };
 
+  // Disable past dates (before today)
   const isDisabledDate = (date) => {
     const today = startOfDay(new Date());
     return isBefore(date, today);
@@ -59,29 +74,38 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
     const dateToSet = startOfDay(date);
 
     if (focusedInput === 'startDate') {
+      // If endDate exists and is before new startDate, swap them
       if (endDate && isBefore(endDate, dateToSet)) {
         setStartDate(dateToSet);
         setEndDate(null);
         setFocusedInput('endDate');
       } else {
         setStartDate(dateToSet);
+        // If we have an endDate and it's the same as startDate, clear it
+        if (endDate && isSameDay(dateToSet, endDate)) {
+          setEndDate(null);
+        }
         setFocusedInput('endDate');
       }
     } else {
-      if (isBefore(dateToSet, startDate)) {
-        setStartDate(dateToSet);
-        setFocusedInput('endDate');
-      } else if (dateToSet.getTime() === startDate.getTime()) {
+      // For endDate selection
+      // Don't allow checkout before or on the same day as checkin
+      if (isBefore(dateToSet, startDate) || isSameDay(dateToSet, startDate)) {
         return;
-      } else {
-        setEndDate(dateToSet);
+      }
+
+      setEndDate(dateToSet);
+      const nights = calculateNights(startDate, dateToSet);
+      
+      // Ensure onDateChange is a function before calling
+      if (typeof onDateChange === 'function') {
         onDateChange({
           startDate: startDate,
           endDate: dateToSet,
-          nights: differenceInDays(dateToSet, startDate),
+          nights: nights,
         });
-        setTimeout(onClose, 200);
       }
+      setTimeout(onClose, 200);
     }
   };
 
@@ -96,10 +120,12 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
 
     const days = [];
 
-    for (let i = 0; i < startingDayOfWeek; i++) {
+    // Add empty slots for days before the first day of month
+    for (let i = 0; i < (startingDayOfWeek === 0 ? 6 : startingDayOfWeek - 1); i++) {
       days.push(null);
     }
 
+    // Add all days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       days.push(date);
@@ -142,8 +168,10 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
                 const isStart = isStartDate(date);
                 const isEnd = isEndDate(date);
                 const isRange = isDateInRange(date);
-                const isHover = hoverDate && isDateInRange(hoverDate) && startDate && !endDate
-                  ? isBefore(date, hoverDate) || date.getTime() === hoverDate.getTime()
+                
+                // Show hover effect for range selection
+                const isHover = hoverDate && startDate && !endDate
+                  ? !isBefore(date, startDate) && isBefore(date, hoverDate)
                   : false;
 
                 return (
@@ -162,6 +190,8 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
                     }}
                     onMouseLeave={() => setHoverDate(null)}
                     disabled={isDisabled}
+                    type="button"
+                    aria-label={format(date, 'dd MMM yyyy')}
                   >
                     {format(date, 'd')}
                   </button>
@@ -177,23 +207,26 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
   const month1 = renderCalendar(0);
   const month2 = renderCalendar(1);
 
-  const nights = startDate && endDate ? differenceInDays(endDate, startDate) : 0;
+  // Calculate nights correctly using timestamp
+  const nights = calculateNights(startDate, endDate);
 
   return (
     <div className="drp-container" ref={containerRef}>
-      {/* Info Row */}
+      {/* Info Row - Booking.com style */}
       <div className="drp-info">
-        <div className="drp-info-item">
-          <span className="drp-info-label">Check-in:</span>
-          <span className="drp-info-value">
-            {startDate ? format(startDate, 'dd MMM') : 'Select'}
-          </span>
-        </div>
-        <div className="drp-info-item">
-          <span className="drp-info-label">Check-out:</span>
-          <span className="drp-info-value">
-            {endDate ? format(endDate, 'dd MMM') : 'Select'}
-          </span>
+        <div className="drp-info-section">
+          <div className="drp-info-item">
+            <span className="drp-info-label">CHECK-IN:</span>
+            <span className="drp-info-value">
+              {startDate ? format(startDate, 'dd MMM') : 'Select'}
+            </span>
+          </div>
+          <div className="drp-info-item">
+            <span className="drp-info-label">CHECK-OUT:</span>
+            <span className="drp-info-value">
+              {endDate ? format(endDate, 'dd MMM') : 'Select'}
+            </span>
+          </div>
         </div>
         {nights > 0 && (
           <div className="drp-nights">
@@ -208,6 +241,8 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
           className="drp-nav-btn"
           onClick={() => setCurrentMonth(addMonths(currentMonth, -1))}
           title="Previous month"
+          type="button"
+          aria-label="Previous month"
         >
           ←
         </button>
@@ -215,6 +250,8 @@ const DateRangePicker = ({ onDateChange, onClose, initialStartDate = null, initi
           className="drp-nav-btn"
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
           title="Next month"
+          type="button"
+          aria-label="Next month"
         >
           →
         </button>

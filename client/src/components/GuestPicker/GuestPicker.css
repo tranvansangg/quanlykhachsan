@@ -13,15 +13,11 @@
   overflow: hidden;
 }
 
-/* Content Area */
-.gp-content {
+/* Header with Blue Background */
+.gp-header {
+  background: #003580;
   padding: 16px;
-}
-
-/* Overview Section */
-.gp-overview {
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 2px solid #0050a0;
 }
 
 .gp-summary {
@@ -31,19 +27,23 @@
 }
 
 .gp-summary-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
   margin: 0;
+  letter-spacing: 0.2px;
+}
+
+/* Content Area */
+.gp-content {
+  padding: 24px;
 }
 
 /* Selectors Grid */
 .gp-selectors {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-  padding: 16px 0;
-  border-bottom: 1px solid #f3f4f6;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 /* Individual Selector */
@@ -51,63 +51,69 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .gp-label {
   font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #111827;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
 }
 
-/* Control Group */
-.gp-control {
+/* Control Wrapper */
+.gp-control-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 6px 8px;
+  gap: 12px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 8px;
   width: 100%;
+  transition: all 0.2s ease;
 }
 
-.gp-btn {
-  flex: 0 0 24px;
-  height: 24px;
+.gp-control-wrapper:hover {
+  border-color: #bfdbfe;
+  box-shadow: 0 2px 8px rgba(0, 53, 128, 0.08);
+}
+
+.gp-btn-control {
+  flex: 0 0 28px;
+  height: 28px;
   border: none;
-  background: transparent;
+  background: #f3f4f6;
   color: #6b7280;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-.gp-btn:hover:not(:disabled) {
+.gp-btn-control:hover:not(:disabled) {
   background: #e5e7eb;
-  color: #0071c2;
+  color: #003580;
 }
 
-.gp-btn:disabled {
-  opacity: 0.3;
+.gp-btn-control:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-.gp-value {
+.gp-value-control {
   flex: 1;
   text-align: center;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: #111827;
-  min-width: 24px;
+  min-width: 20px;
 }
 
 /* Additional Rooms Section */
