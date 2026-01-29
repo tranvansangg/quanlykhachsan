@@ -18,7 +18,6 @@ const HotelDetail = () => {
     distance: '',
     title: '',
     desc: '',
-    cheapestPrice: '',
     photos: [],
     star: 5,
     featured: false,
@@ -106,6 +105,11 @@ const HotelDetail = () => {
         ...formData,
         photos: photosToSend,
       };
+
+      // Ensure backend-required field exists even if admin no longer sets it in UI
+      if (typeof payload.cheapestPrice === 'undefined' || payload.cheapestPrice === '') {
+        payload.cheapestPrice = 0;
+      }
 
       const res = await fetch(url, {
         method,
@@ -207,18 +211,6 @@ const HotelDetail = () => {
                       value={formData.city}
                       onChange={handleChange}
                       placeholder="Ví dụ: Hà Nội"
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Giá Rẻ Nhất *</label>
-                    <input
-                      type="number"
-                      name="cheapestPrice"
-                      value={formData.cheapestPrice}
-                      onChange={handleChange}
-                      placeholder="Giá"
                       required
                     />
                   </div>

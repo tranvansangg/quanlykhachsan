@@ -18,12 +18,21 @@ const Reviews = () => {
         try {
             const token = localStorage.getItem('token');
             const res = await fetch('http://localhost:8800/api/reviews', {
-                headers: { authorization: `Bearer ${token}` },
+                headers: { 
+                    authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
             });
+            
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            
             const data = await res.json();
             setReviews(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error('Error loading reviews:', error);
+            setReviews([]);
         } finally {
             setLoading(false);
         }
@@ -33,13 +42,23 @@ const Reviews = () => {
         if (window.confirm('Xóa đánh giá này?')) {
             try {
                 const token = localStorage.getItem('token');
+                const userId = localStorage.getItem('userId'); // Get current user ID
+                
                 await fetch(`http://localhost:8800/api/reviews/${id}`, {
                     method: 'DELETE',
-                    headers: { authorization: `Bearer ${token}` },
+                    headers: { 
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        userId: userId,
+                        isAdmin: true // Admin can delete any review
+                    })
                 });
                 loadReviews();
             } catch (error) {
                 console.error('Error deleting review:', error);
+                alert('Lỗi khi xóa đánh giá');
             }
         }
     };

@@ -9,9 +9,38 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import FavoriteButton from "../favoriteButton/FavoriteButton";
+import axiosInstance from "../../utils/axiosInstance";
+import { useEffect, useState } from "react";
 import "./searchItem.css";
 
 const SearchItem = ({ item }) => {
+  const [minRoomPrice, setMinRoomPrice] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchRooms = async () => {
+      try {
+        if (!item?._id) return;
+        const res = await axiosInstance.get(`/rooms/hotel/${item._id}`);
+        const rooms = res.data || [];
+        if (Array.isArray(rooms) && rooms.length > 0) {
+          const prices = rooms.map((r) => Number(r.price || 0)).filter(p => p > 0);
+          if (prices.length > 0) {
+            const min = Math.min(...prices);
+            if (mounted) setMinRoomPrice(min);
+            return;
+          }
+        }
+        if (mounted) setMinRoomPrice(null);
+      } catch (err) {
+        console.error("Error fetching rooms for hotel", item._id, err);
+        if (mounted) setMinRoomPrice(null);
+      }
+    };
+
+    fetchRooms();
+    return () => { mounted = false; };
+  }, [item?._id]);
 
   const renderStars = (star) => {
     return Array(Math.floor(star))
@@ -93,8 +122,8 @@ const SearchItem = ({ item }) => {
         <div className="text-right mt-3">
           <p className="text-xs text-slate-600">Mỗi đêm từ:</p>
           <div className="flex items-baseline gap-1 mt-1">
-            <span className="text-lg font-bold text-slate-900">
-              ₫{(item.cheapestPrice || 1000000).toLocaleString("vi-VN")}
+              <span className="text-lg font-bold text-slate-900">
+              ₫{((minRoomPrice ?? item.cheapestPrice ?? 1000000)).toLocaleString("vi-VN")}
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">Bao gồm thuế và phí</p>

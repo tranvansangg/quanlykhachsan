@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import Review from "../models/Review.js";
 import Booking from "../models/Booking.js";
+import { verifyAdmin, verifyToken } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
@@ -49,6 +50,36 @@ const verifyCompletedBooking = async (userId, hotelId) => {
     return false;
   }
 };
+
+// GET /reviews - Get all reviews (for admin)
+router.get("/", verifyAdmin, async (req, res) => {
+  try {
+    const reviews = await Review.find()
+      .populate("userId", "firstName lastName email")
+      .populate("hotelId", "name")
+      .sort({ createdAt: -1 });
+
+    const enrichedReviews = reviews.map(review => ({
+      _id: review._id,
+      hotelName: review.hotelId?.name || "Unknown Hotel",
+      hotelID: review.hotelId?._id || "",
+      userName: review.userId 
+        ? `${review.userId.firstName} ${review.userId.lastName}` 
+        : "Unknown User",
+      userEmail: review.userId?.email || "",
+      rating: review.rating,
+      comment: review.comment,
+      verified: review.verified,
+      createdAt: review.createdAt,
+      updatedAt: review.updatedAt,
+    }));
+
+    res.status(200).json(enrichedReviews);
+  } catch (err) {
+    console.error("Error fetching reviews:", err);
+    res.status(500).json({ message: "Lỗi khi lấy danh sách đánh giá", error: err.message });
+  }
+});
 
 // POST /reviews - Create or Update review
 router.post("/", async (req, res) => {
@@ -161,18 +192,20 @@ router.get("/check/:userId/:hotelId", async (req, res) => {
 });
 
 // DELETE /reviews/:reviewId - Delete review (admin or review owner)
-router.delete("/:reviewId", async (req, res) => {
+router.delete("/:reviewId", verifyToken, async (req, res) => {
   try {
     const { reviewId } = req.params;
-    const { userId } = req.body; // Client must send userId to verify ownership
+    const { userId, isAdmin } = req.body;
 
+    // Validate review exists
     const review = await Review.findById(reviewId);
     if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+      return res.status(404).json({ message: "Đánh giá không tồn tại" });
     }
 
-    // Verify ownership (simple check, should be improved with auth middleware)
-    if (review.userId !== userId) {
+    // Check authorization - admin can delete any review, user can delete own review
+    const isOwner = review.userId.toString() === userId;
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({ message: "Không có quyền xóa đánh giá này" });
     }
 
@@ -180,7 +213,7 @@ router.delete("/:reviewId", async (req, res) => {
     res.status(200).json({ success: true, message: "Đánh giá đã được xóa" });
   } catch (err) {
     console.error("Error deleting review:", err);
-    res.status(500).json({ message: "Lỗi khi xóa đánh giá" });
+    res.status(500).json({ message: "Lỗi khi xóa đánh giá", error: err.message });
   }
 });
 

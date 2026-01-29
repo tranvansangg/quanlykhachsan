@@ -10,6 +10,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  LineChart,
+  Line,
 } from "recharts";
 import {
   Building2,
@@ -18,8 +20,10 @@ import {
   Star,
   TrendingUp,
   DollarSign,
+  BookOpen,
+  AlertCircle,
 } from "lucide-react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import "./Dashboard.scss";
 
 const Dashboard = () => {
@@ -28,52 +32,92 @@ const Dashboard = () => {
     rooms: 0,
     users: 0,
     reviews: 0,
+    bookings: 0,
+    totalRevenue: 0,
   });
   const [recentHotels, setRecentHotels] = useState([]);
   const [recentRooms, setRecentRooms] = useState([]);
+  const [recentBookings, setRecentBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [chartData, setChartData] = useState([]);
+  const [bookingStatusData, setBookingStatusData] = useState([]);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem("token");
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
+        setError(null);
 
-        const [hotelsRes, roomsRes, usersRes, reviewsRes] = await Promise.all([
-          axios.get("/hotels", { headers }),
-          axios.get("/rooms", { headers }),
-          axios.get("/users", { headers }),
-          axios.get("/reviews", { headers }),
+        const [hotelsRes, roomsRes, usersRes, reviewsRes, bookingsRes] = await Promise.all([
+          axiosInstance.get("/hotels"),
+          axiosInstance.get("/rooms"),
+          axiosInstance.get("/users"),
+          axiosInstance.get("/reviews"),
+          axiosInstance.get("/bookings"),
         ]);
 
-        const hotels = hotelsRes.data || [];
-        const rooms = roomsRes.data || [];
-        const users = usersRes.data || [];
-        const reviews = reviewsRes.data || [];
+        const hotels = Array.isArray(hotelsRes.data) ? hotelsRes.data : [];
+        const rooms = Array.isArray(roomsRes.data) ? roomsRes.data : [];
+        const users = Array.isArray(usersRes.data) ? usersRes.data : [];
+        const reviews = Array.isArray(reviewsRes.data) ? reviewsRes.data : [];
+        const bookings = bookingsRes.data?.data || bookingsRes.data || [];
+
+        // Calculate total revenue
+        const totalRevenue = Array.isArray(bookings)
+          ? bookings.reduce((sum, booking) => sum + (booking.totalPrice || 0), 0)
+          : 0;
+
+        // Calculate booking status breakdown
+        const statusBreakdown = {
+          confirmed: 0,
+          completed: 0,
+          cancelled: 0,
+          pending: 0,
+        };
+
+        if (Array.isArray(bookings)) {
+          bookings.forEach((booking) => {
+            const status = booking.status || "pending";
+            statusBreakdown[status] = (statusBreakdown[status] || 0) + 1;
+          });
+        }
 
         setStats({
           hotels: hotels.length,
           rooms: rooms.length,
           users: users.length,
           reviews: reviews.length,
+          bookings: bookings.length,
+          totalRevenue: totalRevenue,
         });
 
         setRecentHotels(hotels.slice(0, 5).reverse());
         setRecentRooms(rooms.slice(0, 8).reverse());
+        
+        if (Array.isArray(bookings)) {
+          setRecentBookings(bookings.slice(0, 5).reverse());
+        }
 
-        const chartData = [
+        const overviewData = [
           { name: "Khách Sạn", value: hotels.length, fill: "#6366f1" },
           { name: "Phòng", value: rooms.length, fill: "#ec4899" },
           { name: "Người Dùng", value: users.length, fill: "#06b6d4" },
           { name: "Đánh Giá", value: reviews.length, fill: "#f59e0b" },
+          { name: "Đặt Phòng", value: bookings.length, fill: "#10b981" },
         ];
-        setChartData(chartData);
+        setChartData(overviewData);
+
+        const bookingStatusChart = [
+          { name: "Xác Nhận", value: statusBreakdown.confirmed, fill: "#3b82f6" },
+          { name: "Hoàn Thành", value: statusBreakdown.completed, fill: "#10b981" },
+          { name: "Hủy", value: statusBreakdown.cancelled, fill: "#ef4444" },
+          { name: "Chờ Xử Lý", value: statusBreakdown.pending, fill: "#f59e0b" },
+        ];
+        setBookingStatusData(bookingStatusChart);
       } catch (error) {
         console.error("Error fetching stats:", error);
+        setError("Lỗi tải dữ liệu dashboard");
       } finally {
         setLoading(false);
       }
@@ -82,14 +126,15 @@ const Dashboard = () => {
     fetchStats();
   }, []);
 
-  const StatCard = ({ icon: Icon, title, value, color, bgColor }) => (
+  const StatCard = ({ icon: Icon, title, value, color, bgColor, trend }) => (
     <div className={`stat-card ${bgColor}`}>
       <div className="stat-icon">
         <Icon size={28} color={color} />
       </div>
       <div className="stat-content">
         <p className="stat-label">{title}</p>
-        <h3 className="stat-value">{loading ? "-" : value}</h3>
+        <h3 className="stat-value">{loading ? "-" : typeof value === "number" && value > 1000 ? `${(value / 1000).toFixed(1)}K` : value}</h3>
+        {trend && <p className="stat-trend-text">↑ {trend}</p>}
       </div>
       <div className="stat-trend">
         <TrendingUp size={16} color={color} />
@@ -100,10 +145,21 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="dashboard loading-container">
-        <div className="skeleton-loader"></div>
-        <div className="skeleton-loader"></div>
-        <div className="skeleton-loader"></div>
-        <div className="skeleton-loader"></div>
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Đang tải dữ liệu...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard error-container">
+        <div className="error-state">
+          <AlertCircle size={40} color="#ef4444" />
+          <p>{error}</p>
+        </div>
       </div>
     );
   }
@@ -112,7 +168,7 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="dashboard-header">
         <h1>Dashboard</h1>
-        <p>Chào mừng quay lại, Admin!</p>
+        <p>Chào mừng quay lại, Admin! Tổng quan hệ thống quản lý khách sạn</p>
       </div>
 
       <div className="stats-grid">
@@ -144,6 +200,16 @@ const Dashboard = () => {
           color="#f59e0b"
           bgColor="bg-amber"
         />
+        {/* Removed Tổng Đặt Phòng card as requested */}
+        {stats.totalRevenue > 0 && (
+          <StatCard
+            icon={DollarSign}
+            title="Tổng Doanh Thu"
+            value={`${(stats.totalRevenue || 0).toLocaleString("vi-VN")} ₫`}
+            color="#ef4444"
+            bgColor="bg-red"
+          />
+        )}
       </div>
 
       <div className="charts-section">
@@ -180,11 +246,11 @@ const Dashboard = () => {
         </div>
 
         <div className="chart-container">
-          <h2>Tỷ Lệ Phân Bố</h2>
+          <h2>Trạng Thái Đặt Phòng</h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={chartData}
+                data={bookingStatusData}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
@@ -193,7 +259,7 @@ const Dashboard = () => {
                 dataKey="value"
                 label
               >
-                {chartData.map((entry, index) => (
+                {bookingStatusData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.fill} />
                 ))}
               </Pie>
@@ -274,7 +340,7 @@ const Dashboard = () => {
                     <td>
                       <span className="price-badge">
                         <DollarSign size={14} />
-                        {room.price?.toLocaleString("vi-VN")}
+                        {room.price?.toLocaleString("vi-VN")} ₫
                       </span>
                     </td>
                     <td>{room.maxPeople || "-"}</td>
@@ -286,6 +352,57 @@ const Dashboard = () => {
               ) : (
                 <tr>
                   <td colSpan="4" className="no-data">
+                    Chưa có dữ liệu
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="table-container">
+          <div className="table-header">
+            <h2>Đặt Phòng Gần Đây</h2>
+            <span className="badge">{recentBookings.length}</span>
+          </div>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Khách Sạn</th>
+                <th>Người Dùng</th>
+                <th>Ngày Check-in</th>
+                <th>Trạng Thái</th>
+                <th>Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentBookings.length > 0 ? (
+                recentBookings.map((booking) => (
+                  <tr key={booking._id} className="table-row">
+                    <td>
+                      <span className="hotel-name">
+                        {booking.hotelId?.name || "Không xác định"}
+                      </span>
+                    </td>
+                    <td>{booking.userId?.username || "Người dùng"}</td>
+                    <td>
+                      {booking.dates?.startDate
+                        ? new Date(booking.dates.startDate).toLocaleDateString("vi-VN")
+                        : "-"}
+                    </td>
+                    <td>
+                      <span className={`status-badge status-${booking.status || "pending"}`}>
+                        {booking.status || "pending"}
+                      </span>
+                    </td>
+                    <td className="price-badge">
+                      {booking.totalPrice?.toLocaleString("vi-VN")} ₫
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="no-data">
                     Chưa có dữ liệu
                   </td>
                 </tr>
